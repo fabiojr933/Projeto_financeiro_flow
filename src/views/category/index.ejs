@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh; background-color: #f6f9ff;">
+
+  <div class="pagetitle d-flex justify-content-between align-items-center mb-4">
+    <h1>Categorias</h1>
+    <button class="btn btn-primary fw-bold px-4 py-2"
+      onclick="prepararModalCadastro()"
+      data-bs-toggle="modal"
+      data-bs-target="#modalCategoria"
+      style="border-radius: 10px; background-color: #5a57e6;">
+      <i class="bi bi-plus-lg me-1"></i> Adicionar
+    </button>
+  </div>
+
+  <section class="section">
+
+  <!-- BOTÕES + PESQUISA (RESPONSIVO) -->
+<div class="row mb-4 g-2 align-items-center">
+
+  <!-- BOTÕES -->
+  <div class="col-12 col-md-6">
+    <div class="d-flex justify-content-center justify-content-md-start">
+      <div class="d-inline-flex p-1 bg-white rounded-3 shadow-sm border w-100 w-md-auto">
+        <button
+          id="btnDespesas"
+          onclick="showCategory('despesas')"
+          class="btn btn-white shadow-sm fw-bold text-danger flex-fill flex-md-none px-4 py-2"
+        >
+          <i class="bi bi-arrow-up-right me-1"></i> Despesas
+        </button>
+
+        <button
+          id="btnReceitas"
+          onclick="showCategory('receitas')"
+          class="btn text-muted flex-fill flex-md-none px-4 py-2"
+        >
+          <i class="bi bi-arrow-down-left me-1"></i> Receitas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PESQUISA -->
+  <div class="col-12 col-md-6">
+    <div class="d-flex justify-content-center justify-content-md-end">
+      <div class="input-group w-100" style="max-width: 320px;">
+        <span class="input-group-text bg-white">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          id="searchCategory"
+          class="form-control"
+          placeholder="Pesquisar categoria..."
+        />
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+            <!-- DESPESAS -->
+            <div id="sectionDespesas" class="row">
+
+              <% 
+                const despesas = data.filter(d => d.type === 'despesa'); 
+              %>
+
+              <% if (despesas.length > 0) { %>
+
+                <% despesas.forEach(function(dados){ %>
+                  <div class="col-xxl-3 col-md-6 mb-4 category-item">
+                    <div class="card info-card position-relative border-0 shadow-sm h-100" style="border-radius: 20px;">
+                      <div class="card-body pt-4">
+
+                        <div class="d-flex align-items-center">
+                          <div class="rounded-3 d-flex align-items-center justify-content-center text-white"
+                              style="width:55px;height:55px;background:<%= dados.color_code %>;">
+                            <i class="bi <%= dados.icon %> fs-4"></i>
+                          </div>
+
+                          <div class="ps-3">
+                            <h6 class="fw-bold mb-0"><%= dados.name %></h6>
+                            <span class="text-muted small fw-bold">SAÍDA</span>
+                          </div>
+                        </div>
+
+                        <div class="position-absolute bottom-0 end-0 p-2 d-flex">
+                          <button class="btn btn-link"
+                            onclick="prepararEdicao(
+                              <%= dados.id %>,
+                              '<%= dados.name %>',
+                              '<%= dados.type %>',
+                              '<%= dados.color_code %>',
+                              '<%= dados.icon %>'
+                            )">
+                            <i class="bi bi-pencil-square fs-5"></i>
+                          </button>
+
+                          <button class="btn btn-link text-danger"
+                            onclick="abrirModalExclusaoCategory(<%= dados.id %>)">
+                            <i class="bi bi-trash fs-5"></i>
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+
+              <% } else { %>
+
+                <!-- MENSAGEM SEM DESPESAS -->
+                <div class="col-12">
+                  <div class="card border-0 shadow-sm text-center py-5">
+                    <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+                    <h6 class="fw-bold">Nenhuma despesa cadastrada</h6>
+                    <p class="text-muted small mb-0">
+                      Cadastre uma categoria de despesa para começar
+                    </p>
+                  </div>
+                </div>
+
+              <% } %>
+
+            </div>
+
+
+          <!-- RECEITAS -->
+          <div id="sectionReceitas" class="row d-none">
+
+            <% 
+              const receitas = data.filter(d => d.type === 'receita'); 
+            %>
+
+            <% if (receitas.length > 0) { %>
+
+              <% receitas.forEach(function(dados){ %>
+                <div class="col-xxl-3 col-md-6 mb-4 category-item">
+                  <div class="card info-card position-relative border-0 shadow-sm h-100" style="border-radius: 20px;">
+                    <div class="card-body pt-4">
+
+                      <div class="d-flex align-items-center">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center text-white"
+                            style="width:55px;height:55px;background:<%= dados.color_code %>;">
+                          <i class="bi <%= dados.icon %> fs-4"></i>
+                        </div>
+
+                        <div class="ps-3">
+                          <h6 class="fw-bold mb-0"><%= dados.name %></h6>
+                          <span class="text-muted small fw-bold">ENTRADA</span>
+                        </div>
+                      </div>
+
+                      <div class="position-absolute bottom-0 end-0 p-2 d-flex">
+                        <button class="btn btn-link"
+                          onclick="prepararEdicao(
+                            <%= dados.id %>,
+                            '<%= dados.name %>',
+                            '<%= dados.type %>',
+                            '<%= dados.color_code %>',
+                            '<%= dados.icon %>'
+                          )">
+                          <i class="bi bi-pencil-square fs-5"></i>
+                        </button>
+
+                        <button class="btn btn-link text-danger"
+                          onclick="abrirModalExclusaoCategory(<%= dados.id %>)">
+                          <i class="bi bi-trash fs-5"></i>
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+
+            <% } else { %>
+
+              <!-- MENSAGEM SEM RECEITAS -->
+              <div class="col-12">
+                <div class="card border-0 shadow-sm text-center py-5">
+                  <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+                  <h6 class="fw-bold">Nenhuma receita cadastrada</h6>
+                  <p class="text-muted small mb-0">
+                    Cadastre uma categoria de receita para começar
+                  </p>
+                </div>
+              </div>
+
+            <% } %>
+
+          </div>
+
+
+
+
+
+  </section>
+
+  <!-- PAGINAÇÃO NO FINAL -->
+  <div class="d-flex justify-content-center my-4">
+    <nav>
+      <ul class="pagination" id="pagination"></ul>
+    </nav>
+  </div>
+ 
+
+
+  <!-- MODAL -->
+  <div class="modal fade" id="modalCategoria">
+    <form id="FormModal" action="/dashboard/categoria" method="post">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 p-3">
+        <div class="modal-header border-0">
+          <h5 id="modalTitulo" class="fw-bold">Nova Categoria</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <input type="hidden" id="editId" name="id">
+
+          <label class="form-label fw-bold">Nome</label>
+          <input id="catNome" required class="form-control mb-3" name="name">
+
+          <label class="form-label fw-bold">Tipo</label>
+          <select id="catTipo" class="form-select mb-3" name="type">
+            <option value="despesa">Despesa</option>
+            <option value="receita">Receita</option>
+          </select>
+
+          <label class="form-label fw-bold">Cor</label>
+          <div class="d-flex gap-2 mb-3">
+            <label><input type="radio" name="color_code" checked value="#0066f1" class="btn-check"><div class="rounded-3" style="width:40px;height:40px;background:#6366f1"></div></label>
+            <label><input type="radio" name="color_code" value="#10b981" class="btn-check"><div class="rounded-3" style="width:40px;height:40px;background:#10b981"></div></label>
+            <label>
+            <input type="radio" name="color_code" value="#f59e0b" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#f59e0b"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#ec4899" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#ec4899"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#8b5cf6" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#8b5cf6"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#22d3ee" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#22d3ee"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#f87171" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#f87171"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#34d399" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#34d399"></div>
+          </label>
+          <label>
+            <input type="radio" name="color_code" value="#facc15" class="btn-check">
+            <div class="rounded-3" style="width:40px;height:40px;background:#facc15"></div>
+          </label>
+          </div>
+
+          <label class="form-label fw-bold">Ícone</label>
+          <div class="d-flex gap-2">
+            <label><input type="radio" name="icon" checked value="bi-house" class="btn-check"><div class="btn btn-light"><i class="bi bi-house"></i></div></label>
+            <label><input type="radio" name="icon" value="bi-wallet2" class="btn-check"><div class="btn btn-light"><i class="bi bi-wallet2"></i></div></label>
+            <label>
+            <input type="radio" name="icon" value="bi-briefcase" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-briefcase"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-cash-stack" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-cash-stack"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-credit-card" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-credit-card"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-currency-dollar" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-currency-dollar"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-piggy-bank" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-piggy-bank"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-shop" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-shop"></i></div>
+          </label>
+          <label>
+            <input type="radio" name="icon" value="bi-receipt" class="btn-check">
+            <div class="btn btn-light"><i class="bi bi-receipt"></i></div>
+          </label>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+
+   <div class="modal fade" id="modalExcluirCategory" tabindex="-1">
+     <form id="familyForm" action="/dashboard/categoria/delete" method="post">
+      <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+          <div class="modal-body text-center p-4">
+            <input type="hidden" id="categoryId_delete" name="id">
+            <i class="bi bi-exclamation-triangle text-danger fs-1 mb-3 d-block"></i>
+            <h5 class="fw-bold">Excluir Membro?</h5>
+            <p class="text-muted small">Deseja realmente remover este familiar? Os dados vinculados podem ser afetados.</p>
+            <div class="d-flex gap-2 justify-content-center mt-4">
+              <button class="btn btn-light fw-bold px-3" data-bs-dismiss="modal" style="border-radius: 10px;">Cancelar</button>
+              <button type="submit" class="btn btn-danger fw-bold px-3" id="btnConfirmarExclusaoMembro" style="border-radius: 10px;">Excluir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+<script>
+function showCategory(tipo) {
+  document.getElementById('sectionDespesas').classList.toggle('d-none', tipo !== 'despesas');
+  document.getElementById('sectionReceitas').classList.toggle('d-none', tipo !== 'receitas');
+}
+
+function prepararModalCadastro() {
+  modalTitulo.innerText = 'Nova Categoria';
+  editId.value = '';
+  catNome.value = '';
+  catTipo.value = 'despesa';
+}
+
+function prepararEdicao(id, nome, tipo, cor, icone) {
+  modalTitulo.innerText = 'Editar Categoria';
+  editId.value = id;
+  catNome.value = nome;
+  catTipo.value = tipo;
+
+  document.querySelector(`input[name="cor"][value="${cor}"]`)?.click();
+  document.querySelector(`input[name="ico"][value="${icone}"]`)?.click();
+
+  new bootstrap.Modal(modalCategoria).show();
+}
+
+function abrirModalExclusaoCategory(id) {
+        membroIdExclusao = id;
+        document.getElementById('categoryId_delete').value = id;
+
+        const modalDelete = new bootstrap.Modal(
+          document.getElementById('modalExcluirCategory')
+        );
+        modalDelete.show();
+  }
+</script>
+
+
+
+<script>
+const ITEMS_PER_PAGE = 12;
+let currentSection = 'sectionDespesas';
+let currentPage = 1;
+
+function paginate() {
+  const section = document.getElementById(currentSection);
+  const items = section.querySelectorAll('.category-item');
+  const pagination = document.getElementById('pagination');
+
+  pagination.innerHTML = '';
+
+  if (items.length === 0) return;
+
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+
+  items.forEach((item, index) => {
+    item.style.display =
+      index >= (currentPage - 1) * ITEMS_PER_PAGE &&
+      index < currentPage * ITEMS_PER_PAGE
+        ? ''
+        : 'none';
+  });
+
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement('li');
+    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+
+    const a = document.createElement('a');
+    a.className = 'page-link';
+    a.href = '#';
+    a.innerText = i;
+
+    a.onclick = (e) => {
+      e.preventDefault();
+      currentPage = i;
+      paginate();
+    };
+
+    li.appendChild(a);
+    pagination.appendChild(li);
+  }
+}
+
+function showCategory(tipo) {
+  currentSection = tipo === 'despesas'
+    ? 'sectionDespesas'
+    : 'sectionReceitas';
+
+  currentPage = 1;
+
+  document.getElementById('sectionDespesas')
+    .classList.toggle('d-none', tipo !== 'despesas');
+
+  document.getElementById('sectionReceitas')
+    .classList.toggle('d-none', tipo !== 'receitas');
+
+  paginate();
+}
+
+document.addEventListener('DOMContentLoaded', paginate);
+</script>
+
+<script>
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize('NFD')                 // separa letras dos acentos
+    .replace(/[\u0300-\u036f]/g, ''); // remove os acentos
+}
+
+document.getElementById('searchCategory').addEventListener('keyup', function () {
+  const termo = normalizarTexto(this.value);
+
+  const section = document.getElementById(currentSection);
+  const items = section.querySelectorAll('.category-item');
+
+  let visiveis = [];
+
+  items.forEach(item => {
+    const nome = normalizarTexto(
+      item.querySelector('h6').innerText
+    );
+
+    if (nome.includes(termo)) {
+      item.style.display = '';
+      visiveis.push(item);
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // Recria paginação com base no filtro
+  const pagination = document.getElementById('pagination');
+  pagination.innerHTML = '';
+
+  if (termo === '') {
+    paginate();
+    return;
+  }
+
+  const totalPages = Math.ceil(visiveis.length / ITEMS_PER_PAGE);
+  currentPage = 1;
+
+  visiveis.forEach((item, index) => {
+    item.style.display =
+      index < ITEMS_PER_PAGE ? '' : 'none';
+  });
+
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement('li');
+    li.className = `page-item ${i === 1 ? 'active' : ''}`;
+
+    const a = document.createElement('a');
+    a.className = 'page-link';
+    a.href = '#';
+    a.innerText = i;
+
+    a.onclick = (e) => {
+      e.preventDefault();
+      currentPage = i;
+
+      visiveis.forEach((item, index) => {
+        item.style.display =
+          index >= (i - 1) * ITEMS_PER_PAGE &&
+          index < i * ITEMS_PER_PAGE
+            ? ''
+            : 'none';
+      });
+
+      document.querySelectorAll('#pagination .page-item')
+        .forEach(p => p.classList.remove('active'));
+
+      li.classList.add('active');
+    };
+
+    li.appendChild(a);
+    pagination.appendChild(li);
+  }
+});
+</script>
+
+
+
+<style>
+.btn-check:checked + div {
+  border: 3px solid #000;
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+[
+  {
+    "name": "Aluguel",
+    "type": "despesa",
+    "color_code": "#6366f1",
+    "icon": "bi-house-door",
+    "active": "S"
+  },
+  {
+    "name": "Financiamento Imobiliário",
+    "type": "despesa",
+    "color_code": "#8b5cf6",
+    "icon": "bi-bank",
+    "active": "S"
+  },
+  {
+    "name": "IPTU",
+    "type": "despesa",
+    "color_code": "#0ea5e9",
+    "icon": "bi-receipt",
+    "active": "S"
+  },
+  {
+    "name": "Manutenção da Casa",
+    "type": "despesa",
+    "color_code": "#22c55e",
+    "icon": "bi-tools",
+    "active": "S"
+  },
+  {
+    "name": "Reformas",
+    "type": "despesa",
+    "color_code": "#f97316",
+    "icon": "bi-hammer",
+    "active": "S"
+  },
+  {
+    "name": "Seguro Residencial",
+    "type": "despesa",
+    "color_code": "#06b6d4",
+    "icon": "bi-shield-check",
+    "active": "S"
+  },
+
+  {
+    "name": "Energia Elétrica",
+    "type": "despesa",
+    "color_code": "#facc15",
+    "icon": "bi-lightning-charge",
+    "active": "S"
+  },
+  {
+    "name": "Água",
+    "type": "despesa",
+    "color_code": "#38bdf8",
+    "icon": "bi-droplet",
+    "active": "S"
+  },
+  {
+    "name": "Gás",
+    "type": "despesa",
+    "color_code": "#fb7185",
+    "icon": "bi-fire",
+    "active": "S"
+  },
+  {
+    "name": "Internet",
+    "type": "despesa",
+    "color_code": "#6366f1",
+    "icon": "bi-wifi",
+    "active": "S"
+  },
+  {
+    "name": "Telefone",
+    "type": "despesa",
+    "color_code": "#3b82f6",
+    "icon": "bi-phone",
+    "active": "S"
+  },
+  {
+    "name": "TV por Assinatura",
+    "type": "despesa",
+    "color_code": "#9333ea",
+    "icon": "bi-tv",
+    "active": "S"
+  },
+
+  {
+    "name": "Supermercado",
+    "type": "despesa",
+    "color_code": "#22c55e",
+    "icon": "bi-cart",
+    "active": "S"
+  },
+  {
+    "name": "Feira",
+    "type": "despesa",
+    "color_code": "#84cc16",
+    "icon": "bi-basket",
+    "active": "S"
+  },
+  {
+    "name": "Açougue",
+    "type": "despesa",
+    "color_code": "#ef4444",
+    "icon": "bi-shop",
+    "active": "S"
+  },
+  {
+    "name": "Padaria",
+    "type": "despesa",
+    "color_code": "#f59e0b",
+    "icon": "bi-cup-hot",
+    "active": "S"
+  },
+  {
+    "name": "Restaurantes",
+    "type": "despesa",
+    "color_code": "#fb7185",
+    "icon": "bi-egg-fried",
+    "active": "S"
+  },
+  {
+    "name": "Lanches / Delivery",
+    "type": "despesa",
+    "color_code": "#f97316",
+    "icon": "bi-bag",
+    "active": "S"
+  },
+
+  {
+    "name": "Combustível",
+    "type": "despesa",
+    "color_code": "#0f172a",
+    "icon": "bi-fuel-pump",
+    "active": "S"
+  },
+  {
+    "name": "Manutenção Veicular",
+    "type": "despesa",
+    "color_code": "#475569",
+    "icon": "bi-wrench",
+    "active": "S"
+  },
+  {
+    "name": "Seguro do Veículo",
+    "type": "despesa",
+    "color_code": "#0284c7",
+    "icon": "bi-shield-lock",
+    "active": "S"
+  },
+  {
+    "name": "IPVA / Licenciamento",
+    "type": "despesa",
+    "color_code": "#64748b",
+    "icon": "bi-file-earmark-text",
+    "active": "S"
+  },
+
+  {
+    "name": "Consultas Médicas",
+    "type": "despesa",
+    "color_code": "#ef4444",
+    "icon": "bi-heart-pulse",
+    "active": "S"
+  },
+  {
+    "name": "Exames",
+    "type": "despesa",
+    "color_code": "#f43f5e",
+    "icon": "bi-clipboard2-pulse",
+    "active": "S"
+  },
+  {
+    "name": "Farmácia",
+    "type": "despesa",
+    "color_code": "#22c55e",
+    "icon": "bi-capsule",
+    "active": "S"
+  },
+  {
+    "name": "Dentista",
+    "type": "despesa",
+    "color_code": "#38bdf8",
+    "icon": "bi-emoji-smile",
+    "active": "S"
+  },
+  {
+    "name": "Terapias",
+    "type": "despesa",
+    "color_code": "#a855f7",
+    "icon": "bi-chat-heart",
+    "active": "S"
+  },
+
+  {
+    "name": "Mensalidade Escolar",
+    "type": "despesa",
+    "color_code": "#6366f1",
+    "icon": "bi-mortarboard",
+    "active": "S"
+  },
+  {
+    "name": "Faculdade",
+    "type": "despesa",
+    "color_code": "#4f46e5",
+    "icon": "bi-book",
+    "active": "S"
+  },
+  {
+    "name": "Cursos Online",
+    "type": "despesa",
+    "color_code": "#0ea5e9",
+    "icon": "bi-laptop",
+    "active": "S"
+  },
+  {
+    "name": "Material Escolar",
+    "type": "despesa",
+    "color_code": "#f97316",
+    "icon": "bi-pencil",
+    "active": "S"
+  },
+  {
+    "name": "Livros",
+    "type": "despesa",
+    "color_code": "#9333ea",
+    "icon": "bi-journal-bookmark",
+    "active": "S"
+  },
+
+  {
+    "name": "Viagens",
+    "type": "despesa",
+    "color_code": "#06b6d4",
+    "icon": "bi-airplane",
+    "active": "S"
+  },
+  {
+    "name": "Cinema",
+    "type": "despesa",
+    "color_code": "#ef4444",
+    "icon": "bi-film",
+    "active": "S"
+  },
+  {
+    "name": "Streaming (Netflix, Spotify, etc.)",
+    "type": "despesa",
+    "color_code": "#ec4899",
+    "icon": "bi-play-circle",
+    "active": "S"
+  },
+  {
+    "name": "Shows / Eventos",
+    "type": "despesa",
+    "color_code": "#a855f7",
+    "icon": "bi-music-note-beamed",
+    "active": "S"
+  },
+
+  {
+    "name": "Roupas",
+    "type": "despesa",
+    "color_code": "#f472b6",
+    "icon": "bi-bag-heart",
+    "active": "S"
+  },
+  {
+    "name": "Calçados",
+    "type": "despesa",
+    "color_code": "#fb7185",
+    "icon": "bi-bag-check",
+    "active": "S"
+  },
+  {
+    "name": "Cosméticos",
+    "type": "despesa",
+    "color_code": "#ec4899",
+    "icon": "bi-brush",
+    "active": "S"
+  },
+  {
+    "name": "Cabelo / Barbeiro",
+    "type": "despesa",
+    "color_code": "#64748b",
+    "icon": "bi-scissors",
+    "active": "S"
+  },
+  {
+    "name": "Academia",
+    "type": "despesa",
+    "color_code": "#22c55e",
+    "icon": "bi-activity",
+    "active": "S"
+  }
+]

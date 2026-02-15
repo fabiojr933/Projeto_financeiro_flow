@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<style>
+  .subscription-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .subscription-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  /* Card principal */
+  .plan-active {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    border-radius: 22px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plan-active::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    bottom: -40px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+
+  .badge-active {
+    background: rgba(255,255,255,0.2);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .plan-name {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+
+  .plan-info {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+
+  .plan-info span {
+    display: block;
+    opacity: 0.8;
+    font-size: 0.7rem;
+    margin-bottom: 4px;
+  }
+
+  /* Cards laterais */
+  .side-card {
+    border-radius: 22px;
+    padding: 26px;
+    height: 100%;
+  }
+
+  .gold-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #fff7ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 1.6rem;
+    color: #f59e0b;
+  }
+
+  .btn-dark-rounded {
+    border-radius: 28px;
+    padding: 10px;
+    font-weight: 600;
+  }
+
+  /* Inclusões */
+  .includes-card {
+    border-radius: 22px;
+    padding: 26px;
+  }
+
+  .include-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .include-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Indicação */
+  .referral-card {
+    background: linear-gradient(135deg, #020617, #111827);
+    color: #fff;
+    border-radius: 22px;
+    padding: 26px;
+  }
+
+  .referral-badge {
+    font-size: 0.6rem;
+    background: rgba(255,255,255,0.15);
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .referral-link {
+    font-size: 0.75rem;
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>
+
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh;">
+
+  <section class="section">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+      <h2 class="subscription-title">
+        Sua Assinatura 👑
+      </h2>
+      <p class="subscription-subtitle">
+        Gerencie seu plano e descubra novas vantagens do FinanceFlow Pro.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- PLANO ATIVO -->
+      <div class="col-lg-8">
+        <div class="plan-active shadow-sm">
+          <span class="badge-active">PLANO ATIVO</span>
+
+          <div class="plan-name">FinanceFlow Pro</div>
+
+          <div class="plan-info">
+            <div>
+              <span>PREÇO</span>
+              <strong>R$ 29,90 / mês</strong>
+            </div>
+            <div>
+              <span>PRÓXIMA COBRANÇA</span>
+              <strong>15 Out, 2026</strong>
+            </div>
+            <div>
+              <span>MÉTODO DE PAGAMENTO</span>
+              <strong>•••• 4412</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBRO GOLD -->
+      <div class="col-lg-4">
+        <div class="side-card shadow-sm text-center bg-white">
+          <div class="gold-icon">
+            <i class="bi bi-crown-fill"></i>
+          </div>
+
+          <h5 class="fw-bold mb-1">Membro Gold</h5>
+          <p class="text-muted small mb-4">
+            Acesso antecipado a novas funções inteligentes.
+          </p>
+
+          <a href="/faturas" class="btn btn-dark btn-dark-rounded w-100 mb-2">
+            <i class="bi bi-receipt me-1"></i> Faturas
+          </a>
+
+          <a href="/cancelar-plano" class="text-danger small text-decoration-none">
+            Cancelar plano
+          </a>
+        </div>
+      </div>
+
+      <!-- O QUE INCLUI -->
+      <div class="col-lg-8">
+        <div class="includes-card bg-white shadow-sm">
+          <h5 class="fw-bold mb-4">
+            <i class="bi bi-lightning-charge-fill text-primary me-1"></i>
+            O que seu plano inclui
+          </h5>
+
+          <div class="row g-4">
+            <div class="col-md-6 include-item">
+              <div class="include-icon bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-brain"></i>
+              </div>
+              <div>
+                <strong>IA Insights ilimitados</strong>
+                <p class="text-muted small mb-0">
+                  Análises profundas sem limites diários.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 include-item">
+              <div class="include-icon bg-warning bg-opacity-10 text-warning">
+                <i class="bi bi-credit-card"></i>
+              </div>
+              <div>
+                <strong>Cartões ilimitados</strong>
+                <p class="text-muted small mb-0">
+                  Gestão completa de múltiplos cartões.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 include-item">
+              <div class="include-icon bg-info bg-opacity-10 text-info">
+                <i class="bi bi-bar-chart"></i>
+              </div>
+              <div>
+                <strong>Gráficos Pro</strong>
+                <p class="text-muted small mb-0">
+                  Dashboards avançados e comparativos.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 include-item">
+              <div class="include-icon bg-success bg-opacity-10 text-success">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <div>
+                <strong>Suporte VIP</strong>
+                <p class="text-muted small mb-0">
+                  Atendimento em menos de 2 horas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDICAÇÃO -->
+      <div class="col-lg-4">
+        <div class="referral-card shadow-sm h-100">
+          <span class="referral-badge">INDICAÇÃO</span>
+
+          <h5 class="fw-bold mb-3">
+            Ganhe 1 mês grátis indicando amigos!
+          </h5>
+
+          <a href="/indicacao" class="referral-link text-primary">
+            <i class="bi bi-link-45deg"></i> LINK DE CONVITE
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+</body>
+</html>

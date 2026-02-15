@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('../partials/head.ejs') %>
+
+  <body>
+    <%- include('../partials/header.ejs') %> <%-
+    include('../partials/sidebar.ejs') %>
+
+    <main
+      id="main"
+      class="main"
+      style="min-height: 85vh; background-color: #f6f9ff"
+    >
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold m-0" style="color: #1e293b">Transações</h5>
+        <button
+          class="btn btn-primary btn-sm px-3"
+          data-bs-toggle="modal"
+          data-bs-target="#modalNovoLancamento"
+          style="border-radius: 8px; background: #5a57e6; border: none"
+        >
+          <i class="bi bi-plus-lg"></i> Adicionar
+        </button>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <div class="search-container shadow-sm">
+            <i
+              class="bi bi-search text-muted me-2"
+              style="font-size: 0.8rem"
+            ></i>
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control form-control-sm border-0 shadow-none p-0"
+              placeholder="Pesquisar por descrição ou categoria..."
+            />
+          </div>
+        </div>
+       <div class="col-md-6 d-flex justify-content-md-end gap-2">
+        <form id="FormModal" action="/dashboard/lancamento" method="post" class="d-flex gap-2">
+          <div class="filter-box shadow-sm d-flex align-items-center gap-2 px-2">
+            <span class="filter-label">Período</span>
+            <input type="date" name="date1" value="<%= date1 %>" class="filter-date" />
+            <i class="bi bi-chevron-right text-muted small"></i>
+            <input type="date" name="date2" value="<%= date2 %>" class="filter-date" />
+          </div>
+          <button type="submit" class="filter-box shadow-sm filter-btn">
+            <i class="bi bi-funnel"></i>
+          </button>
+        </form>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="trans-table">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Membro</th>
+              <th>Categoria</th>
+              <th>Origem</th>
+              <th>Data</th>
+              <th>Parc</th>
+              <th>Valor</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+            <tbody id="tableBody">
+
+            <% if (transaction && transaction.length > 0) { %>
+
+              <% transaction.forEach(function(dados){ %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div
+                        class="icon-indicator"
+                        style="background: #ecfdf5; color: #10b981"
+                      >
+                        <i class="bi bi-arrow-down-left"></i>
+                      </div>
+                      <span class="fw-bold" style="font-size: 0.85rem">
+                        <%= dados.description %>
+                      </span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span class="badge bg-<%= (dados.type || '').toLowerCase() === 'despesa' ? 'danger' : 'primary' %>">
+                      <%= dados.type.toUpperCase() %>
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="avatar-circle" style="background:#5a57e6">
+                        <%= dados.family_member.name.charAt(0).toUpperCase() %>
+                      </div>
+                      <span style="font-size:0.8rem"><%= dados.family_member.name %></span>
+                    </div>
+                  </td>
+
+                  <td style="font-size:0.8rem">
+                    <i class="bi bi-bank2 me-1"></i> <%= dados.category.name %>
+                  </td>
+
+                  <td style="font-size:0.8rem">
+                    <i class="bi bi-bank2 me-1"></i> <%= dados.account.institution_name %>
+                  </td>
+
+                  <td style="font-size:0.8rem">
+                    <%= dados.due_date ? new Date(dados.due_date).toLocaleDateString('pt-BR') : '' %>
+                  </td>
+
+                  <td style="font-size:0.85rem"><%= dados.quota %>x</td>
+
+                  <td style="font-size:1.05rem">
+                    <span class="badge bg-<%= (dados.type || '').toLowerCase().trim() === 'despesa' ? 'danger' : 'primary' %>">
+                      <%= dados.amount != null
+                        ? Number(dados.amount).toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          })
+                        : 'R$ 0,00' %>
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+                    <i
+                      class="bi bi-trash3 text-muted"
+                      style="cursor:pointer;opacity:0.5"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalExcluir"
+                      data-id="<%= dados.id %>"
+                    ></i>
+                  </td>
+                </tr>
+              <% }); %>
+
+            <% } else { %>
+
+              <!-- MENSAGEM QUANDO NÃO HÁ LANÇAMENTOS -->
+              <tr>
+                <td colspan="9" class="text-center py-4">
+                  <div class="text-muted">
+                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                    <strong>Nenhum lançamento encontrado</strong>
+                    <div class="small">Adicione um novo lançamento para começar</div>
+                  </div>
+                </td>
+              </tr>
+
+            <% } %>
+
+          </tbody>
+
+        </table>
+
+        <nav class="d-flex justify-content-end mt-3">
+          <ul class="pagination pagination-sm" id="pagination"></ul>
+        </nav>
+
+
+      </div>
+    </main>
+
+    <div
+      class="modal fade modal-confirm"
+      id="modalExcluir"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content shadow-lg p-3">
+          <div class="modal-body text-center">
+            <div class="mb-3">
+              <i
+                class="bi bi-exclamation-circle text-danger"
+                style="font-size: 3rem"
+              ></i>
+            </div>
+            <h5 class="fw-bold text-dark">Deseja realmente excluir?</h5>
+            <p class="text-muted small">
+              Esta ação não poderá ser desfeita e removerá o registro
+              permanentemente.
+            </p>
+          </div>
+          <div class="d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-cancel w-100 py-2 text-dark"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <a href="#"
+              id="btnConfirmDelete"
+              style="background-color: #ef4444"
+              class="btn btn-confirm-delete w-100 py-2 text-dark menuLoad"
+            >
+              Excluir
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade modal-custom"
+      id="modalNovoLancamento"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="FormModalTransaction" action="/dashboard/lancamento/salvar" method="post">
+          <div class="modal-header border-0">
+            <div>
+              <h5 class="fw-bold m-0">Novo Lançamento</h5>
+              <small
+                class="text-muted fw-bold"
+                style="font-size: 0.6rem; text-transform: uppercase"
+                >Gestão de Fluxo</small
+              >
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formLancamento">
+              <div class="btn-check-group mb-3">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="type"
+                  id="tipoReceita"
+                  value="receita"
+                  autocomplete="off"
+                />
+                <label class="btn-check-label receita" for="tipoReceita"
+                  ><i class="bi bi-arrow-down-left me-1"></i> RECEITA</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="type"
+                  id="tipoDespesa"
+                  value="despesa"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn-check-label despesa" for="tipoDespesa"
+                  ><i class="bi bi-arrow-up-right me-1"></i> DESPESA</label
+                >
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-7">
+                  <label class="label-mini">Descrição</label>
+                  <input
+                    type="text"
+                    id="desc"
+                    name="description"
+                    class="form-control input-custom"
+                    required
+                    placeholder="Ex: Aluguel, Salário..."
+                  />
+                </div>
+                <div class="col-5">
+                  <label class="label-mini">Valor Total (R$)</label>
+                  <input
+                    required
+                    type="number"
+                    id="valorTotal"
+                    class="form-control input-custom"
+                    value="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="label-mini">Parcelas</label>
+                  <input
+                    required
+                    type="number"
+                    id="numParcelas"
+                    class="form-control input-custom"
+                    value="1"
+                    min="1"
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="label-mini">Data Inicial</label>
+                  <input
+                    type="date"
+                    id="dataInicial"
+                    name="issued_date"
+                    class="form-control input-custom"
+                  />
+                </div>
+              </div>
+
+              <div
+                id="containerParcelas"
+                class="mb-3 p-2 rounded-3"
+                style="
+                  background: #fdfdfd;
+                  border: 1px dashed #e2e8f0;
+                  max-height: 200px;
+                  overflow-y: auto;
+                "
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <span class="label-mini m-0">Edição Manual</span>
+                  <span
+                    id="somaParcelas"
+                    class="badge bg-success bg-opacity-10 text-success"
+                    style="font-size: 0.7rem"
+                    >Soma: R$ 0,00</span
+                  >
+                </div>
+                <div id="listaParcelas"></div>
+              </div>
+
+              <div class="row g-3 mb-4" id="container-receita">
+                <div class="col-12">
+                  <label class="label-mini">Receita</label>
+                  <select required id="select-receita" name="category_id" class="form-select input-custom">
+                    <option value="">Pesquisar categoria...</option>
+                     <% categoryReceita.forEach(function(dados){ %>
+                    <option value="<%= dados.id %>""><%= dados.name %></option>
+                     <% }); %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4" id="container-despesa">
+                <div class="col-12">
+                  <label class="label-mini">Despesa</label>
+                  <select required id="select-despesa" name="category_id" class="form-select input-custom">
+                    <option value="">Pesquisar categoria...</option>
+                    <% categoryDespesa.forEach(function(dados){ %>
+                    <option value="<%= dados.id %>""><%= dados.name %></option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-6">
+                  <label class="label-mini">Pagamento</label>
+                  <select required
+                    id="select-pagamento"
+                    class="form-select input-custom"
+                    name="account_id"
+                  >
+                    <option value="">Pesquisar pagamento...</option>
+                     <% accounts.forEach(function(dados){ %>
+                    <option value="<%= dados.id %>"><%= dados.institution_name %> - <%= dados.type %></option>
+                    <% }); %>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="label-mini">Membro</label>
+                  <select required id="select-membro" name="family_member_id" class="form-select input-custom">
+                    <option value="">Pesquisar membro...</option>
+                     <% family.forEach(function(dados){ %>
+                    <option value="<%= dados.id %>"><%= dados.name %> - <%= dados.relationship %></option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2 mt-4">
+                <button
+                  type="button"
+                  class="btn btn-light w-100 fw-bold py-2"
+                  style="border-radius: 12px; color: #64748b"
+                  data-bs-dismiss="modal"
+                >
+                  CANCELAR
+                </button>
+                <button
+                  type="submit"
+                  id="btnSalvar"
+                  class="btn btn-primary w-100 fw-bold py-2"
+                  style="border-radius: 12px; background: #5a57e6; border: none"
+                >
+                  CADASTRAR
+                </button>
+              </div>
+            </form>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %> 
+    <%- include('../partials/script.ejs') %>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    // === 1. UTILITÁRIOS E PARSE ===
+    function parseMoeda(valor) {
+        if (!valor) return 0;
+        valor = valor.replace(/[^\d.,]/g, '');
+        if (valor.includes(',')) {
+            valor = valor.replace(/\./g, '').replace(',', '.');
+        }
+        return Number(valor);
+    }
+
+    // === 2. PAGINAÇÃO E BUSCA DA TABELA ===
+    const rowsPerPage = 7;
+    const tableBody = document.getElementById("tableBody");
+    const searchInput = document.getElementById("searchInput");
+    const pagination = document.getElementById("pagination");
+
+    if (tableBody && searchInput && pagination) {
+        const rows = Array.from(tableBody.querySelectorAll("tr"));
+        let filteredRows = [...rows];
+        let currentPage = 1;
+
+        function renderTable() {
+            tableBody.innerHTML = "";
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageRows = filteredRows.slice(start, end);
+            pageRows.forEach(row => tableBody.appendChild(row));
+            renderPagination();
+        }
+
+        function renderPagination() {
+            pagination.innerHTML = "";
+            const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            if (totalPages <= 1) return;
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement("li");
+                li.className = `page-item ${i === currentPage ? "active" : ""}`;
+                const a = document.createElement("a");
+                a.className = "page-link";
+                a.href = "#";
+                a.textContent = i;
+                a.addEventListener("click", e => {
+                    e.preventDefault();
+                    currentPage = i;
+                    renderTable();
+                });
+                li.appendChild(a);
+                pagination.appendChild(li);
+            }
+        }
+
+        function applySearch() {
+            const term = searchInput.value.toLowerCase();
+            filteredRows = rows.filter(row => {
+                const descricao = row.cells[0]?.innerText.toLowerCase() || "";
+                const categoria = row.cells[3]?.innerText.toLowerCase() || "";
+                return descricao.includes(term) || categoria.includes(term);
+            });
+            currentPage = 1;
+            renderTable();
+        }
+
+        searchInput.addEventListener("input", applySearch);
+        renderTable();
+    }
+
+    // === 3. MODAL DE EXCLUSÃO ===
+    const modalExcluir = document.getElementById('modalExcluir');
+    if (modalExcluir) {
+        modalExcluir.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            const id = trigger.getAttribute('data-id');
+            const btnDelete = document.getElementById('btnConfirmDelete');
+            if (btnDelete) btnDelete.href = `/dashboard/lancamento/delete/${id}`;
+        });
+    }
+
+    // === 4. TOMSELECT E ALTERNAR RECEITA/DESPESA ===
+    const selectReceita = document.getElementById("select-receita");
+    const tsReceita = selectReceita ? new TomSelect("#select-receita", { create: false, placeholder: "Pesquisar categoria..." }) : null;
+    
+    const selectDespesa = document.getElementById("select-despesa");
+    const tsDespesa = selectDespesa ? new TomSelect("#select-despesa", { create: false, placeholder: "Pesquisar categoria..." }) : null;
+
+    if (document.getElementById("select-pagamento")) new TomSelect("#select-pagamento", { create: false, sortField: { field: "text", direction: "asc" }, placeholder: "Pesquisar pagamento..." });
+    if (document.getElementById("select-membro")) new TomSelect("#select-membro", { create: false, sortField: { field: "text", direction: "asc" }, placeholder: "Pesquisar membro..." });
+
+    const radioReceita = document.getElementById("tipoReceita");
+    const radioDespesa = document.getElementById("tipoDespesa");
+    const divReceita = document.getElementById("container-receita");
+    const divDespesa = document.getElementById("container-despesa");
+
+    function alternarCampos() {
+        if (!radioReceita || !radioDespesa) return;
+        if (radioReceita.checked) {
+            divReceita?.classList.remove("d-none");
+            tsReceita?.enable();
+            divDespesa?.classList.add("d-none");
+            tsDespesa?.disable();
+        } else {
+            divDespesa?.classList.remove("d-none");
+            tsDespesa?.enable();
+            divReceita?.classList.add("d-none");
+            tsReceita?.disable();
+        }
+    }
+
+    radioReceita?.addEventListener("change", alternarCampos);
+    radioDespesa?.addEventListener("change", alternarCampos);
+    alternarCampos();
+
+    // === 5. LÓGICA DE PARCELAS E SOMA ===
+    const inputValorTotal = document.getElementById("valorTotal");
+    const inputParcelas = document.getElementById("numParcelas");
+    const inputData = document.getElementById("dataInicial");
+    const listaParcelas = document.getElementById("listaParcelas");
+    const btnSalvar = document.getElementById("btnSalvar");
+
+    if (inputData && !inputData.value) inputData.valueAsDate = new Date();
+
+    function atualizarSoma() {
+        let soma = 0;
+        document.querySelectorAll(".val-p").forEach((input) => {
+            soma += parseFloat(input.value) || 0;
+        });
+        const elSoma = document.getElementById("somaParcelas");
+        if (elSoma) elSoma.textContent = `Soma: R$ ${soma.toFixed(2)}`;
+    }
+
+    function atualizarParcelas() {
+        if (!inputValorTotal || !inputParcelas || !listaParcelas) return;
+        const total = parseFloat(inputValorTotal.value) || 0;
+        const qtd = parseInt(inputParcelas.value) || 1;
+        const dataBase = new Date(inputData.value + "T00:00:00");
+
+        listaParcelas.innerHTML = "";
+        const valorBase = Math.floor((total / qtd) * 100) / 100;
+        const diferenca = parseFloat((total - valorBase * qtd).toFixed(2));
+
+        for (let i = 0; i < qtd; i++) {
+            const dataParcela = new Date(dataBase);
+            dataParcela.setMonth(dataBase.getMonth() + i);
+            const dataFormatada = dataParcela.toISOString().split("T")[0];
+            let valorFinalParcela = i === 0 ? valorBase + diferenca : valorBase;
+
+            const html = `
+                <div class="input-group-parcela mb-2 d-flex align-items-center">
+                    <span class="text-muted fw-bold me-2" style="font-size: 0.7rem; width: 25px;">${i + 1}ªX</span>
+                    <input type="hidden" name="parcela[]" value="${i + 1}">
+                    <input type="number" name="valor_parcela[]" class="form-control form-control-sm border-0 shadow-none p-0 fw-bold val-p" 
+                           value="${valorFinalParcela.toFixed(2)}" step="0.01" style="font-size: 0.8rem;">
+                    <input type="date" name="data_parcela[]" class="form-control form-control-sm border-0 shadow-none p-0 text-primary dat-p" 
+                           value="${dataFormatada}" style="font-size: 0.8rem; width: 120px; text-align: right;">
+                </div>`;
+            listaParcelas.insertAdjacentHTML("beforeend", html);
+        }
+        if (btnSalvar) btnSalvar.textContent = qtd > 1 ? `CADASTRAR ${qtd} PARCELAS` : "CADASTRAR";
+        atualizarSoma();
+    }
+
+    inputValorTotal?.addEventListener("input", atualizarParcelas);
+    inputParcelas?.addEventListener("input", atualizarParcelas);
+    inputData?.addEventListener("change", atualizarParcelas);
+    listaParcelas?.addEventListener("input", (e) => {
+        if (e.target.classList.contains("val-p")) atualizarSoma();
+    });
+
+    atualizarParcelas();
+
+    // === 6. SUBMIT DO FORMULÁRIO COM VALIDAÇÃO E LOADER (SWEETALERT) ===
+    const form = document.getElementById('FormModalTransaction');
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validação de Soma vs Total
+            const somaTexto = document.getElementById("somaParcelas")?.innerText || "0";
+            const totalTexto = document.getElementById("valorTotal")?.value || "0";
+            const somaTotal = parseMoeda(somaTexto);
+            const totalGeral = parseMoeda(totalTexto);
+
+            if (totalGeral !== somaTotal) {
+                Swal.fire('Atenção', 'O total das parcelas não corresponde ao valor total.', 'warning');
+                return;
+            }
+
+            // Se validado, mostra o Loader
+            let progress = 0;
+            Swal.fire({
+                title: '🔒 Processando com segurança',
+                html: `
+                    <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:14px;">
+                        ⚙️ Aplicando suas alterações e validando os dados com total segurança.
+                    </div>
+                    <div style="font-weight:600; font-size:14px; color:#111827;">
+                       ⏳ <span id="progressValue">0%</span>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                backdrop: 'rgba(15, 23, 42, 0.55)',
+                customClass: { container: 'swal-blur-backdrop' },
+                didOpen: () => {
+                    Swal.showLoading();
+                    const progressText = document.getElementById('progressValue');
+                    const timerInterval = setInterval(() => {
+                        if (progress < 99) {
+                            progress++;
+                            if (progressText) progressText.textContent = `${progress}%`;
+                        }
+                    }, 100);
+                    
+                    // Envio final do formulário
+                    form.submit();
+                }
+            });
+        });
+    }
+});
+  </script>
+
+  </body>
+</html>

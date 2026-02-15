@@ -1,0 +1,75 @@
+[
+  {
+    "name": "Salário",
+    "type": "receita",
+    "color_code": "#22c55e",
+    "icon": "bi-cash-stack",
+    "active": "S"
+  },
+  {
+    "name": "Comissão",
+    "type": "receita",
+    "color_code": "#4ade80",
+    "icon": "bi-graph-up-arrow",
+    "active": "S"
+  },
+  {
+    "name": "Hora Extra",
+    "type": "receita",
+    "color_code": "#16a34a",
+    "icon": "bi-clock-history",
+    "active": "S"
+  },
+  {
+    "name": "Gratificação",
+    "type": "receita",
+    "color_code": "#86efac",
+    "icon": "bi-award",
+    "active": "S"
+  },
+
+  {
+    "name": "Freelance",
+    "type": "receita",
+    "color_code": "#38bdf8",
+    "icon": "bi-laptop",
+    "active": "S"
+  },
+  {
+    "name": "Serviços Prestados",
+    "type": "receita",
+    "color_code": "#0ea5e9",
+    "icon": "bi-briefcase",
+    "active": "S"
+  },
+  {
+    "name": "Bicos",
+    "type": "receita",
+    "color_code": "#60a5fa",
+    "icon": "bi-tools",
+    "active": "S"
+  },
+
+  {
+    "name": "Vendas",
+    "type": "receita",
+    "color_code": "#facc15",
+    "icon": "bi-cart-check",
+    "active": "S"
+  },
+  {
+    "name": "Prestação de Serviços",
+    "type": "receita",
+    "color_code": "#fde047",
+    "icon": "bi-clipboard-check",
+    "active": "S"
+  },
+
+  {
+    "name": "Restituição de Imposto",
+    "type": "receita",
+    "color_code": "#a855f7",
+    "icon": "bi-receipt-refund",
+    "active": "S"
+  }
+]

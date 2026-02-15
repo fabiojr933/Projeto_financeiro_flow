@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh; background-color: #f6f9ff;">
+
+  <div class="pagetitle mb-4">
+    <h1 style="font-size: 1.3rem; font-weight: 700; color: #1a1a3d;">Meu Perfil</h1>
+  </div>
+
+  <section class="section">
+    <div class="row g-4"> <div class="col-xl-8 col-lg-7">
+        <div class="card border-0 shadow-sm p-3 p-md-4" style="border-radius: 30px;">
+          <div class="card-body">
+            
+            <div class="d-flex flex-column flex-sm-row align-items-center text-center text-sm-start mb-5">
+              <div class="position-relative mb-3 mb-sm-0">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border" style="width: 100px; height: 100px;">
+                  <i class="bi bi-person text-muted" style="font-size: 3rem;"></i>
+                </div>
+                <button class="btn btn-primary position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; background-color: #5a57e6; border: 2px solid #fff;">
+                  <i class="bi bi-camera-fill" style="font-size: 0.8rem;"></i>
+                </button>
+              </div>
+              <div class="ms-sm-4">
+                <h4 class="fw-bold mb-1" style="color: #1a1a3d;"><%= data.dataValues.name.split(' ')[0] %></h4>
+                <p class="text-muted small mb-2">Plano Pro desde Jan, 2026</p>
+                <div class="d-flex gap-2 justify-content-center justify-content-sm-start">
+                  <span class="badge rounded-pill" style="background-color: #e0e7ff; color: #5a57e6; font-weight: 600;">USUÁRIO ATIVO</span>
+                  <span class="badge rounded-pill" style="background-color: #dcfce7; color: #16a34a; font-weight: 600;">VERIFICADO</span>
+                </div>
+              </div>
+            </div>
+
+            <form action="/dashboard/usuario/atualizar" method="POST">
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold small text-muted text-uppercase" style="letter-spacing: 1px;">Nome Completo</label>
+                  <div class="input-group bg-light rounded-3 overflow-hidden">
+                    <span class="input-group-text border-0 bg-transparent text-muted"><i class="bi bi-person"></i></span>
+                    <input type="text" name="name" class="form-control border-0 bg-transparent py-2" value="<%= data.dataValues.name %>">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold small text-muted text-uppercase" style="letter-spacing: 1px;">E-mail</label>
+                  <div class="input-group bg-light rounded-3 overflow-hidden">
+                    <span class="input-group-text border-0 bg-transparent text-muted"><i class="bi bi-envelope"></i></span>
+                    <input type="email" name="email" class="form-control border-0 bg-transparent py-2" value="<%= data.dataValues.email %>">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-bold small text-muted text-uppercase" style="letter-spacing: 1px;">Endereço Residencial</label>
+                  <div class="input-group bg-light rounded-3 overflow-hidden">
+                    <span class="input-group-text border-0 bg-transparent text-muted"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" name="address" class="form-control border-0 bg-transparent py-2" value="<%= data.dataValues.address %>">
+                  </div>
+                </div>
+
+                <div class="col-12 mt-4 mt-md-5">
+                  <h5 class="fw-bold d-flex align-items-center mb-4" style="color: #1a1a3d;">
+                    <i class="bi bi-lock me-2 text-primary"></i> Segurança da Conta
+                  </h5>
+                  <div class="row g-3 g-md-4">                   
+                    <div class="col-md-6">
+                      <label class="form-label fw-bold small text-muted text-uppercase" style="letter-spacing: 1px;">Nova Senha</label>
+                      <input type="password" name="password" class="form-control bg-light border-0 py-2 rounded-3" placeholder="Min. 4 caracteres">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 text-center text-md-end mt-4 mt-md-5">
+                  <button type="submit" class="btn btn-primary fw-bold px-4 py-2 shadow w-100 w-md-auto" style="border-radius: 12px; background-color: #5a57e6; border: none;">
+                    <i class="bi bi-save me-2"></i> Salvar Alterações
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-5">
+        <div class="card border-0 shadow-lg text-white mb-4" style="background-color: #0b0e1f; border-radius: 30px;">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+              <div class="bg-dark p-2 rounded-3 border border-secondary border-opacity-25" style="background-color: #1a1d2e !important;">
+                <i class="bi bi-shield-lock text-white fs-5"></i>
+              </div>
+              <span class="text-uppercase fw-bold" style="font-size: 0.65rem; color: #6366f1; letter-spacing: 1px;">Nível de Segurança</span>
+            </div>
+            
+            <h3 class="fw-bold mb-1">Forte</h3>
+            <div class="d-flex align-items-center mb-3">
+              <div class="progress w-100 me-3" style="height: 8px; background-color: #1a1d2e; border-radius: 10px;">
+                <div class="progress-bar" role="progressbar" style="width: 85%; background: linear-gradient(90deg, #5a57e6, #7c79f2); border-radius: 10px;"></div>
+              </div>
+              <span class="small fw-bold opacity-50">85%</span>
+            </div>
+            <p class="small mb-0 opacity-75" style="font-size: 0.85rem; line-height: 1.5;">
+              Seu perfil está bem protegido. Para atingir 100%, ative a autenticação em dois fatores.
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm" style="border-radius: 30px;">
+          <div class="card-body p-4">
+            <h6 class="fw-bold d-flex align-items-center mb-4" style="color: #1a1a3d;">
+              <i class="bi bi-lightbulb me-2 text-warning"></i> Dicas de Perfil
+            </h6>
+            
+            <div class="mb-3">
+              <p class="text-uppercase fw-bold text-muted mb-1" style="font-size: 0.6rem; letter-spacing: 1px;">Foto de Perfil</p>
+              <p class="small text-muted mb-0">Use uma foto clara para identificação.</p>
+            </div>
+
+            <div class="mb-3 border-top pt-3">
+              <p class="text-uppercase fw-bold text-muted mb-1" style="font-size: 0.6rem; letter-spacing: 1px;">Senhas Seguras</p>
+              <p class="small text-muted mb-0">Combine letras, números e símbolos.</p>
+            </div>
+
+            <div class="alert alert-success border-0 mb-0 mt-4 d-flex align-items-center" style="background-color: #f0fdf4; color: #16a34a; border-radius: 15px; font-size: 0.75rem; font-weight: 600;">
+              <i class="bi bi-check-circle-fill me-2"></i> Verificado em 12/01/2026.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+<style>
+  /* Melhorias de UX e Responsividade */
+  .form-control:focus {
+    box-shadow: none;
+    background-color: #fff !important;
+    border: 1px solid #5a57e6 !important;
+  }
+  
+  .input-group { transition: all 0.3s ease; }
+
+  @media (max-width: 576px) {
+    .pagetitle h1 { text-align: center; }
+    .card { border-radius: 20px !important; }
+  }
+
+  body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+</style>
+
+</body>
+</html>

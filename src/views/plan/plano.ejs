@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<style>
+  /* Títulos */
+  .pricing-title {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .pricing-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  /* Cards */
+  .plan-card {
+    border-radius: 16px;
+    border: none;
+  }
+
+  .plan-basic {
+    background: #ffffff;
+  }
+
+  .plan-pro {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+  }
+
+  .plan-pro .text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+
+  /* Preço */
+  .price {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .price small {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* Lista de recursos */
+  .feature-list li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+
+  .feature-list i {
+    font-size: 1rem;
+  }
+
+  /* Badge popular */
+  .badge-popular {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #facc15;
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* Botões */
+  .btn-plan {
+    border-radius: 24px;
+    font-weight: 600;
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Padding interno do card */
+  .plan-card .card-body {
+    padding: 1.25rem !important;
+  }
+</style>
+
+
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh;">
+
+  <section class="section">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8 text-center">
+        <h1 class="pricing-title">Escolha o seu plano</h1>
+        <p class="pricing-subtitle">
+          Desbloqueie o poder total da inteligência artificial financeira.
+        </p>
+        <p class="pricing-subtitle fw-bold">
+          Atualmente, todos os recursos estão liberados gratuitamente. Em breve, alguns planos poderão se tornar pagos.
+        </p>
+
+      </div>
+    </div>
+
+    <div class="row justify-content-center g-4">
+
+      <!-- Plano Basic -->
+      <div class="col-lg-4">
+        <div class="card plan-card plan-basic shadow-sm h-100">
+          <div class="card-body p-4 d-flex flex-column">
+
+            <h6 class="text-uppercase text-muted fw-bold">Basic</h6>
+            <h2 class="fw-bold mb-3">Grátis</h2>
+            <p class="text-muted mb-4">
+              Organização básica para o dia a dia.
+            </p>
+
+            <ul class="list-unstyled feature-list flex-grow-1">
+              <li>
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Até 50 lançamentos mensais
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Relatório DRE simplificado
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Gráficos básicos
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success"></i>
+                1 conta bancária
+              </li>
+              <li class="text-muted">
+                <i class="bi bi-x-circle"></i>
+                IA Insights limitados
+              </li>
+            </ul>
+
+            <button class="btn btn-light btn-plan mt-3" disabled>
+              Seu Plano
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Plano Pro -->
+      <div class="col-lg-4">
+        <div class="card plan-card plan-pro shadow-lg h-100 position-relative">
+          <span class="badge-popular">POPULAR</span>
+
+          <div class="card-body p-4 d-flex flex-column">
+
+            <h6 class="text-uppercase fw-bold">FinanceFlow Pro</h6>
+
+            <div class="mb-3">
+              <span class="price">R$ 29,90</span>
+              <small>/mês</small>
+            </div>
+
+            <p class="text-muted mb-4">
+              Controle absoluto com inteligência artificial ilimitada.
+            </p>
+
+            <ul class="list-unstyled feature-list flex-grow-1">
+              <li>
+                <i class="bi bi-check-circle-fill text-white"></i>
+                Lançamentos ilimitados
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-white"></i>
+                DRE e Fluxo Avançado
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-white"></i>
+                Contas ilimitadas
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-white"></i>
+                IA Insights e Previsões
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-white"></i>
+                Suporte VIP
+              </li>
+            </ul>
+
+            <a href="/dashboard/assinatura" class="btn btn-light btn-plan mt-3 d-flex align-items-center justify-content-center gap-2">
+              Assinar Agora
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+</body>
+</html>

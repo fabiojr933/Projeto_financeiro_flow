@@ -1,0 +1,418 @@
+/* Tabs */
+.btn-active-tab {
+    background: #fff !important;
+    color: #5a57e6 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.btn-inactive-tab {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+}
+
+/* Card Conta */
+.card-conta {
+    border-radius: 20px;
+    transition: transform 0.2s;
+}
+
+.card-conta:hover {
+    transform: translateY(-5px);
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.bg-primary-light {
+    background-color: #eef2ff;
+}
+
+/* Card Crédito Dark */
+.card-credito-dark {
+    background: #111827;
+    color: white;
+    border-radius: 24px 24px 0 0;
+    position: relative;
+}
+
+.icon-card-mini {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.label-card {
+    font-size: 0.55rem;
+    font-weight: 800;
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.text-success-bright {
+    color: #10b981;
+}
+
+/* Infos do rodapé do cartão */
+.info-box span {
+    font-size: 0.5rem;
+    color: #94a3b8;
+    display: block;
+    font-weight: 800;
+}
+
+.info-box strong {
+    font-size: 0.75rem;
+    color: #1e293b;
+}
+
+/* Botão Adicionar Dashed */
+.btn-add-dashed {
+    border-radius: 24px;
+    border: 2px dashed #cbd5e1 !important;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-add-dashed:hover {
+    background: #fff;
+    border-color: #5a57e6 !important;
+    color: #5a57e6 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+
+
+
+
+.cursor-pointer {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cursor-pointer:hover {
+    transform: scale(1.2);
+    color: #5a57e6 !important;
+    /* Cor de destaque ao passar o mouse */
+}
+
+.text-danger:hover {
+    color: #dc3545 !important;
+}
+
+
+
+
+/* Variáveis de Cor */
+:root {
+    --primary-purple: #5a57e6;
+    --bg-light: #f6f9ff;
+    --text-muted: #94a3b8;
+}
+
+/* Ajustes Gerais */
+body {
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+/* TABS */
+.btn-active-tab {
+    background: #fff !important;
+    color: var(--primary-purple) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: none;
+    font-size: 0.8rem;
+    border-radius: 10px !important;
+}
+
+.btn-inactive-tab {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-size: 0.8rem;
+}
+
+/* CARDS CONTAS */
+.card-conta {
+    border-radius: 20px;
+    background: white;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* BOTAO ADICIONAR (DASHED) */
+.btn-add-dashed {
+    border-radius: 24px;
+    border: 2px dashed #e2e8f0 !important;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--text-muted);
+}
+
+.btn-add-dashed:hover {
+    border-color: var(--primary-purple) !important;
+    color: var(--primary-purple) !important;
+    background: #fff;
+}
+
+/* --- ESTILO CARD DE CRÉDITO (DARK) --- */
+.card-credito-dark {
+    background: #111827;
+    color: white;
+    border-radius: 24px 24px 0 0;
+    padding: 20px;
+}
+
+.icon-card-mini {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-card-light {
+    font-size: 0.55rem;
+    font-weight: 800;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.text-success-bright {
+    color: #10b981;
+}
+
+.info-box-card {
+    text-align: center;
+    padding: 10px 5px;
+}
+
+.info-box-card span {
+    font-size: 0.55rem;
+    color: #94a3b8;
+    display: block;
+    font-weight: 800;
+}
+
+.info-box-card strong {
+    font-size: 0.8rem;
+    color: #1e293b;
+    display: block;
+}
+
+/* --- MODAIS (CORREÇÃO DO VISUAL FEIO) --- */
+.modal-custom .modal-content {
+    border-radius: 28px;
+    border: none;
+    padding: 20px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-custom h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Botões de Seleção (Passo 1) - Onde estava feio */
+.btn-step {
+    border-radius: 20px !important;
+    padding: 25px 15px !important;
+    border: 1px solid #f1f5f9 !important;
+    background: #fff !important;
+    transition: all 0.2s ease;
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    outline: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.btn-step:hover {
+    border-color: var(--primary-purple) !important;
+    background: #f8fafc !important;
+    transform: translateY(-2px);
+}
+
+.btn-step span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+    display: block;
+}
+
+.icon-step {
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.2rem;
+}
+
+/* Inputs (Passo 2) */
+.label-small {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-control-custom {
+    background-color: #f8fafc !important;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 12px !important;
+    padding: 10px 15px !important;
+    font-size: 0.85rem !important;
+}
+
+.form-control-custom:focus {
+    background-color: #fff !important;
+    border-color: var(--primary-purple) !important;
+    box-shadow: none !important;
+}
+
+.btn-modal-confirm {
+    background: var(--primary-purple);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 12px;
+    border: none;
+    width: 100%;
+}
+
+.btn-modal-back {
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 12px;
+    border: none;
+    width: 100%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cursor-pointer:hover {
+    color: var(--primary-purple) !important;
+}
+
+
+
+
+/* ESTILOS DOS MODAIS BASEADOS NAS IMAGENS */
+.modal-fatura-dark-footer {
+    background: #0f172a;
+    /* Cor escura do rodapé da imagem e4297d */
+    color: white;
+    padding: 20px;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lcto-card {
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.icon-arrow-up {
+    width: 35px;
+    height: 35px;
+    background: #fff1f2;
+    color: #ef4444;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Seletor de Conta (Imagem e429a0) */
+.select-account-box {
+    border: 2px solid #000;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+.btn-confirmar-purple {
+    background-color: #5a57e6;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 30px;
+    font-weight: 700;
+    width: 100%;
+}
+
+.btn-cancelar-light {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-weight: 700;
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh;">
+
+<!-- TOPO -->
+<div class="row mb-3 mx-0">
+  <div class="col-12 px-0">
+    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+      <div class="card-body p-2 p-md-3">
+        <div class="row g-2 align-items-center">
+
+          <div class="col-12 col-md-4 d-flex align-items-center">
+            <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-2"
+                 style="width:40px;height:40px;">
+              <i class="bi bi-calendar-check text-primary"></i>
+            </div>
+            <div>
+              <p class="text-muted fw-bold mb-0 text-uppercase" style="font-size:.6rem;">Análise Atual</p>
+              <h6 class="fw-bold mb-0">
+                <%= new Date(date1).toLocaleDateString('pt-BR') %> até
+                <%= new Date(date2).toLocaleDateString('pt-BR') %>
+              </h6>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-8">
+            <form id="FormModal" action="/dashboard" method="post">
+              <div class="row g-1">
+                <div class="col">
+                  <input type="date" class="form-control form-control-sm bg-light border-0"
+                         name="date1" value="<%= date1 %>">
+                </div>
+                <div class="col">
+                  <input type="date" class="form-control form-control-sm bg-light border-0"
+                         name="date2" value="<%= date2 %>">
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-primary btn-sm">
+                    <i class="bi bi-search"></i> Carregar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section dashboard">
+<div class="row">
+
+<!-- GASTOS POR DIA -->
+<div class="col-lg-8">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gastos por Dia</h5>
+
+      <div id="lineWrapper">
+        <canvas id="lineChart"></canvas>
+      </div>
+
+      <div id="lineEmpty" class="text-center text-muted py-5 d-none">
+        <i class="bi bi-bar-chart fs-2"></i><br>
+        Nenhum lançamento para este período
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GASTOS POR CATEGORIA -->
+<div class="col-lg-4">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gastos por Categoria</h5>
+
+      <div id="pieWrapper">
+        <canvas id="pieChart"></canvas>
+      </div>
+
+      <div id="pieEmpty" class="text-center text-muted py-5 d-none">
+        <i class="bi bi-pie-chart fs-2"></i><br>
+        Nenhum dado disponível
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GASTOS POR CONTAS -->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gastos por Contas</h5>
+
+      <div id="barWrapper">
+        <canvas id="barChart"></canvas>
+      </div>
+
+      <div id="barEmpty" class="text-center text-muted py-5 d-none">
+        <i class="bi bi-bank fs-2"></i><br>
+        Nenhum dado disponível
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GASTOS POR MEMBROS -->
+<div class="col-lg-6">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gastos por Membros</h5>
+
+      <div id="bar2Wrapper">
+        <canvas id="barChart2"></canvas>
+      </div>
+
+      <div id="bar2Empty" class="text-center text-muted py-5 d-none">
+        <i class="bi bi-people fs-2"></i><br>
+        Nenhum dado disponível
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ÚLTIMOS LANÇAMENTOS -->
+<div class="table-responsive mt-3">
+<table class="trans-table">
+<thead>
+<tr>
+  <th>Descrição</th>
+  <th>Tipo</th>
+  <th>Membro</th>
+  <th>Categoria</th>
+  <th>Origem</th>
+  <th>Data</th>
+  <th>Parc</th>
+  <th>Valor</th>
+</tr>
+</thead>
+
+<tbody>
+<% if (!transaction || transaction.length === 0) { %>
+<tr>
+  <td colspan="8" class="text-center py-4 text-muted">
+    <i class="bi bi-info-circle"></i>
+    Nenhum lançamento encontrado
+  </td>
+</tr>
+<% } else { %>
+<% transaction.forEach(dados => { %>
+<tr>
+  <td><%= dados.description %></td>
+  <td>
+    <span class="badge bg-<%= dados.type === 'despesa' ? 'danger' : 'primary' %>">
+      <%= dados.type %>
+    </span>
+  </td>
+  <td><%= dados.family_member.name %></td>
+  <td><%= dados.category.name %></td>
+  <td><%= dados.account.institution_name %></td>
+  <td><%= new Date(dados.due_date).toLocaleDateString('pt-BR') %></td>
+  <td><%= dados.quota %>x</td>
+  <td>
+    <span class="badge bg-danger">
+      <%= Number(dados.amount).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %>
+    </span>
+  </td>
+</tr>
+<% }) %>
+<% } %>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+</main>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+<script>
+const labels_transactionDate = <%- JSON.stringify(transactionDate.map(d => new Date(d.due_date).toLocaleDateString('pt-BR'))) %>;
+const values_transactionDate = <%- JSON.stringify(transactionDate.map(d => Number(d.amount))) %>;
+
+const labels_category = <%- JSON.stringify(category.map(c => c.name)) %>;
+const values_category = <%- JSON.stringify(category.map(c => Number(c.amount))) %>;
+
+const labels_account = <%- JSON.stringify(account.map(a => a.name)) %>;
+const values_account = <%- JSON.stringify(account.map(a => Number(a.amount))) %>;
+
+const labels_member = <%- JSON.stringify(familyMember.map(m => m.name)) %>;
+const values_member = <%- JSON.stringify(familyMember.map(m => Number(m.amount))) %>;
+</script>
+
+<script>
+function gerarCor(op = .7){
+  return `rgba(${Math.random()*200},${Math.random()*200},${Math.random()*200},${op})`;
+}
+</script>
+
+<script>
+// DIA
+if(values_transactionDate.length){
+  new Chart(lineChart,{type:'line',data:{labels:labels_transactionDate,datasets:[{data:values_transactionDate,borderColor:gerarCor(1),fill:true}]}});
+}else{
+  lineWrapper.classList.add('d-none');
+  lineEmpty.classList.remove('d-none');
+}
+
+// CATEGORIA
+if(values_category.length){
+  new Chart(pieChart,{type:'pie',data:{labels:labels_category,datasets:[{data:values_category,backgroundColor:labels_category.map(()=>gerarCor())}]}});
+}else{
+  pieWrapper.classList.add('d-none');
+  pieEmpty.classList.remove('d-none');
+}
+
+// CONTAS
+if(values_account.length){
+  new Chart(barChart,{type:'bar',data:{labels:labels_account,datasets:[{data:values_account,backgroundColor:labels_account.map(()=>gerarCor())}]}});
+}else{
+  barWrapper.classList.add('d-none');
+  barEmpty.classList.remove('d-none');
+}
+
+// MEMBROS
+if(values_member.length){
+  new Chart(barChart2,{type:'bar',data:{labels:labels_member,datasets:[{data:values_member,backgroundColor:labels_member.map(()=>gerarCor())}]}});
+}else{
+  bar2Wrapper.classList.add('d-none');
+  bar2Empty.classList.remove('d-none');
+}
+</script>
+
+</body>
+</html>

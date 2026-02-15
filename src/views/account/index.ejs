@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<style>
+  :root {
+    --primary: #5a57e6;
+    --bg: #f6f9ff;
+  }
+
+  body {
+    background: var(--bg);
+  }
+
+  /* CARD */
+  .card-conta {
+    background: #fff;
+    border-radius: 22px;
+    padding: 18px 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    transition: .25s;
+  }
+
+  .card-conta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.1);
+  }
+
+  .icon-conta {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+  }
+
+  .conta-debito .icon-conta {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  }
+
+  .conta-credito .icon-conta {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  }
+
+  .conta-tipo {
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+  }
+
+  .conta-debito .conta-tipo { color: #0284c7; }
+  .conta-credito .conta-tipo { color: #7c3aed; }
+
+  .conta-actions i {
+    opacity: .5;
+    transition: .2s;
+  }
+
+  .conta-actions i:hover {
+    opacity: 1;
+    color: var(--primary);
+  }
+
+  /* FORM */
+  .input-custom {
+    background: #fcfdfe;
+    border: 1px solid #f0f2f5;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    width: 100%;
+  }
+
+  .btn-primary-custom {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px;
+    font-weight: 700;
+    border: none;
+    width: 100%;
+  }
+
+  .cursor-pointer { cursor: pointer; }
+</style>
+
+<body>
+
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/sidebar.ejs') %>
+
+<main id="main" class="main" style="min-height: 85vh; background-color: var(--light-bg);">
+  <section class="section">
+    <div class="container-fluid">
+
+      <div class="pagetitle d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Contas</h1>
+        <button class="btn btn-primary"
+          style="background:var(--primary);border:none;border-radius:12px;"
+          onclick="abrirModal()">
+          <i class="bi bi-plus-lg me-2"></i>Nova Conta
+        </button>
+      </div>
+
+          <div class="row g-4">
+
+            <% if (data && data.length > 0) { %>
+
+              <% data.forEach(function(dados){ %>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                  <div class="card-conta <%= dados.type === 'DEBITO' ? 'conta-debito' : 'conta-credito' %>">
+                    <div class="d-flex align-items-center justify-content-between">
+
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="icon-conta">
+                          <i class="bi <%= dados.type === 'DEBITO' ? 'bi-wallet2' : 'bi-credit-card' %>"></i>
+                        </div>
+                        <div>
+                          <div class="fw-bold"><%= dados.institution_name %></div>
+                          <span class="conta-tipo">
+                            <%= dados.type === 'DEBITO' ? 'CONTA DÉBITO' : 'CONTA CRÉDITO' %>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="conta-actions">
+                        <i class="bi bi-pencil-square fs-5 me-3 cursor-pointer"
+                          onclick='editar(<%- JSON.stringify(dados) %>)'></i>
+                        <i class="bi bi-trash3 fs-5 cursor-pointer"
+                          onclick="excluir(<%= dados.id %>)"></i>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+
+            <% } else { %>
+
+              <!-- MENSAGEM QUANDO NÃO HÁ CONTAS -->
+              <div class="col-12">
+                <div class="card border-0 shadow-sm text-center py-5">
+                  <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+                  <h6 class="fw-bold text-dark mb-1">Nenhuma conta cadastrada</h6>
+                  <p class="text-muted small mb-0">
+                    Cadastre uma conta para começar a usar o sistema
+                  </p>
+                </div>
+              </div>
+
+            <% } %>
+
+          </div>
+
+
+    </div>
+  </section>
+</main>
+
+
+<div class="modal fade" id="modalConta" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:400px;">
+
+    <form method="post" action="/dashboard/contas" id="FormModal" class="modal-content p-4">
+
+      <input type="hidden" name="id" id="idConta">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold m-0" id="tituloModal">Nova Conta</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Nome</label>
+        <input type="text" name="institution_name" id="nomeConta" 
+               class="input-custom" required>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-bold">Tipo</label>
+        <select name="type" id="tipoConta" class="input-custom" required>
+          <option value="">Selecione</option>
+          <option value="DEBITO">Débito</option>
+          <option value="CREDITO">Crédito</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary-custom">Salvar</button>
+
+    </form>
+  </div>
+</div>
+
+
+<form  id="formDelete" method="post" action="/dashboard/contas/delete"></form>
+
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/script.ejs') %>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const modal = new bootstrap.Modal(document.getElementById('modalConta'));
+
+  function abrirModal() {
+    tituloModal.innerText = 'Nova Conta';
+    idConta.value = '';
+    nomeConta.value = '';
+    tipoConta.value = '';
+    modal.show();
+  }
+
+  function editar(dados) {
+    tituloModal.innerText = 'Editar Conta';
+    idConta.value = dados.id;
+    nomeConta.value = dados.institution_name;
+    tipoConta.value = dados.type;
+    modal.show();
+  }
+
+  function excluir(id) {
+    Swal.fire({
+      title: 'Excluir conta?',
+      text: 'Essa ação não pode ser desfeita',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5a57e6',
+      confirmButtonText: 'Excluir',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        formDelete.innerHTML = `<input type="hidden" name="id" value="${id}">`;
+        formDelete.submit();
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

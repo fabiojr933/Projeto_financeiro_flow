@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../partials/head.ejs') %>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+  <%- include('../partials/sidebar.ejs') %>
+
+  <main id="main" class="main" style="min-height: 85vh; background-color: #f6f9ff;">
+
+    <div class="pagetitle d-flex justify-content-between align-items-center mb-4">
+      <h1 class="fw-bold text-dark">Gestão Familiar</h1>
+      <button class="btn btn-primary fw-bold px-4 py-2 shadow-sm" onclick="prepararModalCadastroMembro()" data-bs-toggle="modal" data-bs-target="#modalMembro" style="border-radius: 12px; background-color: #5a57e6; border: none;">
+        <i class="bi bi-plus-lg me-1"></i> Adicionar
+      </button>
+    </div>
+
+    <section class="section">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(90deg, #5a57e6 0%, #7c79f2 100%); border-radius: 25px;">
+            <div class="card-body p-4 p-md-5">
+              <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-heart-fill me-2 fs-5"></i>
+                <span class="text-uppercase fw-bold small" style="letter-spacing: 1px; opacity: 0.9;">Gestão Familiar</span>
+              </div>
+              <h2 class="fw-bold mb-3">Seu Círculo de Confiança</h2>
+              <p class="mb-0 col-lg-8" style="opacity: 0.9; font-size: 1.1rem;">
+                Cadastre os membros da sua família para acompanhar gastos conjuntos e planejar o futuro financeiro de todos.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+<% if (data && data.length > 0) { %>
+
+  <% data.forEach(function(dados){ %>
+
+    <div class="col-xxl-3 col-md-4 col-sm-6 mb-4">
+      <div class="card border-0 shadow-sm text-center h-100" style="border-radius: 20px;">
+        <div class="card-body p-3">
+
+          <div class="position-relative d-inline-block mb-2">
+            <div 
+              class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm"
+              style="width: 60px; height: 60px; background-color: <%- dados.color_code %>; font-size: 1.5rem;"
+            >
+              <%= dados.name.charAt(0).toUpperCase() %>
+            </div>
+
+            <span class="position-absolute bottom-0 end-0 bg-white rounded-circle border d-flex align-items-center justify-content-center shadow-sm"
+                  style="width: 20px; height: 20px;">
+              <i class="bi bi-shield-check text-primary" style="font-size: 0.7rem;"></i>
+            </span>
+          </div>
+
+          <h6 class="fw-bold mb-0"><%- dados.name %></h6>
+          <p class="text-muted small text-uppercase fw-bold mb-3" style="font-size: 0.65rem;">
+            <%- dados.relationship %>
+          </p>
+
+          <div class="d-flex align-items-center gap-2">
+            <button 
+              class="btn btn-light w-100 fw-bold py-1 border-0"
+              style="border-radius: 8px; background-color: #f8f9fa; font-size: 0.85rem;"
+              onclick="prepararEdicaoMembro(
+                <%= dados.id %>,
+                '<%- dados.name %>',
+                '<%- dados.relationship %>',
+                '<%- dados.color_code %>'
+              )"
+            >
+              <i class="bi bi-pencil me-1"></i> Editar
+            </button>
+
+            <button 
+              class="btn btn-light text-danger py-1 border-0"
+              style="border-radius: 8px; background-color: #f8f9fa;"
+              onclick="abrirModalExclusaoMembro(<%= dados.id %>)"
+            >
+              <i class="bi bi-trash fs-6"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  <% }); %>
+
+<% } else { %>
+
+  <!-- MENSAGEM QUANDO NÃO HÁ MEMBROS -->
+  <div class="col-12">
+    <div class="card border-0 shadow-sm text-center py-5">
+      <i class="bi bi-people fs-1 text-muted mb-3"></i>
+      <h6 class="fw-bold">Nenhum membro cadastrado</h6>
+      <p class="text-muted small mb-0">
+        Adicione um membro da família para começar
+      </p>
+    </div>
+  </div>
+
+<% } %>
+
+
+       
+
+        <div class="col-xxl-3 col-md-4 col-sm-6 mb-4">
+          <div class="card h-100 d-flex flex-column align-items-center justify-content-center border-2 shadow-none" 
+               style="border-radius: 20px; border-style: dashed !important; border-color: #cbd5e1; background: transparent; min-height: 160px; cursor: pointer;"
+               onclick="prepararModalCadastroMembro()" data-bs-toggle="modal" data-bs-target="#modalMembro">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                <i class="bi bi-plus-lg text-secondary fs-4"></i>
+            </div>
+            <span class="text-secondary fw-bold small">Novo Membro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal fade" id="modalMembro" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <form id="FormModal" action="/dashboard/familia" method="post">
+        <div class="modal-content rounded-4 border-0 p-3 shadow">
+          <div class="modal-header border-0 pb-0">
+            <div>
+              <h5 class="modal-title fw-bold" id="tituloModalMembro">Novo Membro</h5>
+              <p class="text-muted small mb-0">Adicione uma pessoa ao seu círculo familiar.</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="membroId" name="id">
+            <label class="form-label fw-bold small text-muted text-uppercase">Nome Completo</label>
+            <input type="text" required id="membroNome" name="name" class="form-control bg-light border-0 py-2 mb-4 rounded-3" placeholder="Ex: Ricardo Santos">
+            
+            <label class="form-label fw-bold small text-muted text-uppercase">Parentesco</label>
+            <select required id="membroParentesco" name="relationship" class="form-select bg-light border-0 py-2 mb-4 rounded-3">
+                <option value="" selected disabled>Selecione...</option>
+                <option value="Pai">Pai</option>
+                <option value="Mãe">Mãe</option>
+                <option value="Filho(a)">Filho(a)</option>
+                <option value="Cônjuge">Cônjuge</option>
+            </select>
+
+            <label class="form-label fw-bold small text-muted text-uppercase">Cor de Identificação</label>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <label><input type="radio" name="color_code" value="#5a57e6" class="btn-check" checked><div class="rounded-3" style="width: 48px; height: 48px; background-color: #5a57e6; cursor: pointer;"></div></label>
+              <label><input type="radio" name="color_code" value="#ec4899" class="btn-check"><div class="rounded-3" style="width: 48px; height: 48px; background-color: #ec4899; cursor: pointer;"></div></label>
+              <label><input type="radio" name="color_code" value="#10b981" class="btn-check"><div class="rounded-3" style="width: 48px; height: 48px; background-color: #10b981; cursor: pointer;"></div></label>
+              <label><input type="radio" name="color_code" value="#f59e0b" class="btn-check"><div class="rounded-3" style="width: 48px; height: 48px; background-color: #f59e0b; cursor: pointer;"></div></label>
+               <label><input type="radio" name="color_code" value="#B01e0b" class="btn-check"><div class="rounded-3" style="width: 48px; height: 48px; background-color: #B01e0b; cursor: pointer;"></div></label>
+            </div>
+          </div>
+          <div class="modal-footer border-0 d-flex justify-content-between">
+            <button type="button" class="btn btn-light fw-bold text-muted px-4" data-bs-dismiss="modal" style="border-radius: 12px;">Cancelar</button>
+            <button  type="submit" class="btn btn-primary fw-bold px-5" style="border-radius: 12px; background-color: #5a57e6; border: none;">Salvar</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    
+
+    <div class="modal fade" id="modalExcluirMembro" tabindex="-1">
+     <form id="FormModal" action="/dashboard/familia/delete" method="post">
+      <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+          <div class="modal-body text-center p-4">
+            <input type="hidden" id="membroId_delete" name="id">
+            <i class="bi bi-exclamation-triangle text-danger fs-1 mb-3 d-block"></i>
+            <h5 class="fw-bold">Excluir Membro?</h5>
+            <p class="text-muted small">Deseja realmente remover este familiar? Os dados vinculados podem ser afetados.</p>
+            <div class="d-flex gap-2 justify-content-center mt-4">
+              <button class="btn btn-light fw-bold px-3" data-bs-dismiss="modal" style="border-radius: 10px;">Cancelar</button>
+              <button class="btn btn-danger fw-bold px-3" id="btnConfirmarExclusaoMembro" style="border-radius: 10px;">Excluir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
+
+  
+  <%- include('../partials/script.ejs') %>
+
+  
+  <script>
+    let membroIdExclusao = null;
+
+    function prepararModalCadastroMembro() {
+      document.getElementById('tituloModalMembro').innerText = "Novo Membro";
+      document.getElementById('membroId').value = "";
+      document.getElementById('membroNome').value = "";
+      document.getElementById('membroParentesco').value = "";
+    }
+
+    function prepararEdicaoMembro(id, nome, parentesco, cor) {
+      document.getElementById('tituloModalMembro').innerText = "Editar Membro";
+      document.getElementById('membroId').value = id;
+      document.getElementById('membroNome').value = nome;
+      document.getElementById('membroParentesco').value = parentesco;
+      
+      // Seleciona a cor correta no rádio
+      const radios = document.getElementsByName('corMembro');
+      radios.forEach(r => {
+        if(r.value === cor) r.checked = true;
+      });
+
+      const modal = new bootstrap.Modal(document.getElementById('modalMembro'));
+      modal.show();
+    }
+
+   function abrirModalExclusaoMembro(id) {
+        membroIdExclusao = id;
+        document.getElementById('membroId_delete').value = id;
+
+        const modalDelete = new bootstrap.Modal(
+          document.getElementById('modalExcluirMembro')
+        );
+        modalDelete.show();
+  }
+
+
+    document.getElementById('btnConfirmarExclusaoMembro').addEventListener('click', function() {    
+      bootstrap.Modal.getInstance(document.getElementById('modalExcluirMembro')).hide();
+    });
+  </script>
+
+  <style>
+    .btn-check:checked + div {
+      border: 3px solid #000 !important;
+      transform: scale(0.9);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+
+</body>
+
+
+
+
+</html>
