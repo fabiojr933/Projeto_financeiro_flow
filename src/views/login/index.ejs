@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <title>Login - FoxAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -126,52 +126,71 @@
   <!-- Template Main JS File -->
   <script src="//assets/js/main.js"></script>
 
-  
- <script>
-const form = document.getElementById('familyFormLogin');
+<script>
+(function () {
 
-form.addEventListener('submit', function (e) {
-  // 1. Evita o envio imediato apenas para abrir o alerta
-  e.preventDefault();
+  const form = document.getElementById('familyFormLogin');
+  if (!form) return;
 
-  let progress = 0;
-  let timerInterval;
+  let alreadySubmitted = false;
 
-  Swal.fire({
-    title: '🔑 Iniciando sua sessão',
-    html: `
-      <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:14px;">
-         🛡️ Validando suas credenciais e preparando
-         um ambiente seguro para você.
-      </div>
-      <div style="font-weight:600; font-size:14px; color:#111827;">
-        ⏳ <span id="progressValue">0%</span>
-      </div>
-    `,
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    backdrop: 'rgba(15, 23, 42, 0.55)',
-    customClass: { container: 'swal-blur-backdrop' },
-    didOpen: () => {
-      Swal.showLoading();
-      const progressText = document.getElementById('progressValue');
-      
-      // Animação visual infinita até a página mudar
-      timerInterval = setInterval(() => {
-        if (progress < 99) { // Vai até 99% e para até a página recarregar
-          progress++;
-          if (progressText) progressText.textContent = `${progress}%`;
-        }
-      }, 100);
-
-      // 2. ENVIA O FORMULÁRIO DE VERDADE
-      // Usamos form.submit() direto no elemento DOM para ignorar este listener de 'submit'
-      form.submit();
+  // 🔴 Fecha loader se voltar pelo histórico
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted && window.Swal) {
+      Swal.close();
+      alreadySubmitted = false;
     }
   });
-});
+
+  form.addEventListener('submit', function (e) {
+    // evita loop de submit
+    if (alreadySubmitted) return;
+
+    e.preventDefault();
+    alreadySubmitted = true;
+
+    let progress = 0;
+    let timerInterval;
+
+    Swal.fire({
+      title: '🔑 Iniciando sua sessão',
+      html: `
+        <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:14px;">
+           🛡️ Validando suas credenciais e preparando
+           um ambiente seguro para você.
+        </div>
+        <div style="font-weight:600; font-size:14px; color:#111827; letter-spacing:0.4px">
+          ⏳ <span id="progressValue">0%</span>
+        </div>
+      `,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      backdrop: 'rgba(15, 23, 42, 0.55)',
+      customClass: { container: 'swal-blur-backdrop' },
+      didOpen: () => {
+        Swal.showLoading();
+        const progressText = document.getElementById('progressValue');
+
+        timerInterval = setInterval(() => {
+          if (progress < 99 && progressText) {
+            progress++;
+            progressText.textContent = `${progress}%`;
+          }
+        }, 100);
+
+        // 🚀 SUBMIT REAL (não dispara o listener novamente)
+        HTMLFormElement.prototype.submit.call(form);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      }
+    });
+  });
+
+})();
 </script>
+
 
 
 </body>

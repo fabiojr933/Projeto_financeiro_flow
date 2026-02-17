@@ -40,7 +40,7 @@
 
   <!-- FORM DO FILTRO -->
   <div class="col-md-6">
-    <form id="btnOptimize" action="/dashboard/consultor" method="post"
+    <form id="formConsultor" action="/dashboard/consultor" method="post"
           class="d-flex justify-content-md-end gap-2">
 
       <div class="filter-box shadow-sm d-flex align-items-center gap-2 px-2">
@@ -56,6 +56,7 @@
 
     </form>
   </div>
+
 </div>
 
 <!-- CONTEÚDO NORMAL DA PÁGINA -->
@@ -78,7 +79,7 @@
               <h2 class="fw-bold mb-0">Consultor Inteligente</h2>
               <span class="text-uppercase small fw-bold"
                     style="color: #6366f1; letter-spacing: 1.5px; font-size: 0.75rem;">
-                Powered by Gemini AI
+                Powered by DeepSeek AI
               </span>
               <p class="mt-2 mb-0 opacity-75">
                 Análise rigorosa dos seus padrões financeiros.
@@ -86,15 +87,15 @@
             </div>
           </div>
 
-          <div class="mt-4 mt-md-0">
-            <button id="btnOptimize" 
-              class="btn btn-primary px-4 py-2 fw-bold"
-              style="background: #5a57e6; border: none; border-radius: 12px; font-size: 1rem;"
-              <%= safeDados.error === 'quota' ? 'disabled' : '' %>>
-              <i class="bi bi-stars me-2"></i>
-              Otimizar Finanças
-            </button>
-          </div>
+        <button
+          type="button"
+          id="btnOptimize"
+          class="btn btn-primary px-4 py-2 fw-bold"
+          style="background:#5a57e6;border:none;border-radius:12px;font-size:1rem;">
+          <i class="bi bi-stars me-2"></i>
+          Consultar
+        </button>
+
 
         </div>
       </div>
@@ -223,41 +224,16 @@
 </main>
 
 <%- include('../partials/footer.ejs') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-  window.addEventListener('load', () => {
-    if (window.Swal) {
-      setTimeout(() => {
-        Swal.close();
-      }, 300);
-    }
-  });
-</script>
-
-<%- include('../partials/script.ejs') %>
-
-<style>
-  .main {
-    background-color: #f8fafc !important;
-  }
-
-  .card {
-    transition: transform 0.2s ease;
-  }
-
-  circle {
-    transition: stroke-dasharray 1s ease-in-out;
-  }
-</style>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btnOptimize');
-  const form = document.querySelector('form[action="/dashboard/consultor"]');
+  const form = document.getElementById('formConsultor');
 
   if (!btn || !form) return;
 
-  btn.addEventListener('click', function () {
-
+  btn.addEventListener('click', () => {
     let progress = 0;
     let interval;
 
@@ -289,14 +265,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // pequeno delay só para o loader aparecer
     setTimeout(() => {
       clearInterval(interval);
-      form.submit(); // 🔥 ENVIA date1 e date2
-    }, 400);
+      form.submit(); // ✅ ENVIA date1 e date2
+    }, 600);
   });
 });
 </script>
+
 
 </body>
 </html>

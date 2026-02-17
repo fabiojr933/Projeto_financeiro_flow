@@ -1,6 +1,5 @@
-const gerarInsightsFinanceiros = require('../services/GeminiService');
 const ReportService = require('../services/ReportService');
-
+const DeepSeekService = require('../services/DeepSeekService');
 class InsightController {
     async index(req, res) {
         let date1 = null;
@@ -36,11 +35,15 @@ class InsightController {
             const despesa = await ReportService.sumListCategoryDespesa(userId, date1, date2);
             const receita = await ReportService.sumListCategoryReceita(userId, date1, date2);
 
-            const data = await gerarInsightsFinanceiros.gerarInsightsFinanceiros(despesa, receita);
-            const dados = await JSON.parse(data);
+            const dados = await DeepSeekService.gerarInsightsFinanceiros(despesa, receita);
+            //const dados = await JSON.parse(data);
+
+            console.log(dados);
+         
 
             res.render('insight/index', { dados, date1, date2 });
         } catch (error) {
+            console.log(error)
             res.render('insight/index', { date1, date2 });
         }
     }

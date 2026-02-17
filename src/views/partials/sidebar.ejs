@@ -78,85 +78,98 @@
 
 </aside>
 
+
 <script>
+(function () {
+
+  // 🔴 Detecta VOLTAR do navegador (bfcache)
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted && window.Swal) {
+      Swal.close();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
-  // Seleciona TODOS os elementos que possuem a classe .menuLoad
-  const menuLinks = document.querySelectorAll('.menuLoad');
+    const menuLinks = document.querySelectorAll('.menuLoad');
 
-  menuLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      
-      // Armazena o link de destino para usar depois
-      const destination = this.href;
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        const destination = this.href;
+        if (destination === window.location.href) return;
 
-      let progress = 0;
-      let interval;
+        e.preventDefault();
 
-      Swal.fire({
-        title: '⏳ Carregando, aguarde...',
-         html: `
-          <div style="
-            font-size:13px;
-            color:#6b7280;
-            line-height:1.6;
-            margin-bottom:14px;
-          ">
-             ✅ Validando informações e preparando o ambiente...
-          </div>
+        let progress = 0;
 
-          <div style="
-            font-weight:600;
-            font-size:14px;
-            color:#111827;
-            letter-spacing:0.4px;
-          ">
-           ⏳ <span id="progressValue">0%</span>
-          </div>
-        `,
-        
-        showConfirmButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        backdrop: 'rgba(15, 23, 42, 0.55)',
-        customClass: {
-          container: 'swal-blur-backdrop'
-        },
-        didOpen: () => {
-          Swal.showLoading();
-          const progressText = document.getElementById('progressValue');
+        Swal.fire({
+          title: '⏳ Carregando, aguarde...',
+          html: `
+            <div style="font-size:13px;color:#6b7280;margin-bottom:14px;">
+              ✅ Validando informações e preparando o ambiente...
+            </div>
+            <div style="font-weight:600;font-size:14px;">
+              ⏳ <span id="progressValue">0%</span>
+            </div>
+          `,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
 
-          interval = setInterval(() => {
-            if (progress < 95) {
-              progress++;
-              progressText.textContent = `${progress}%`;
-            }
-          }, 120);
-        }
-      });    
+          // 🎨 FUNDO IGUAL À IMAGEM
+          backdrop: 'rgba(15, 23, 42, 0.45)',
+          customClass: {
+            container: 'swal-blur-backdrop'
+          },
 
-      // Aguarda um curto período para o Swal renderizar e então navega
-      setTimeout(() => {
-        window.location.href = destination;
-      }, 700);
+          didOpen: () => {
+            Swal.showLoading();
+            const progressText = document.getElementById('progressValue');
+
+            const interval = setInterval(() => {
+              if (progress < 95) {
+                progress++;
+                progressText.textContent = `${progress}%`;
+              }
+            }, 120);
+          }
+        });
+
+        // 🚀 navegação real
+        window.location.assign(destination);
+      });
     });
   });
-});
+
+})();
 </script>
 
 
 
 <script>
+(function () {
+
+  // 🔴 Detecta quando o usuário VOLTA pelo navegador
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      if (window.Swal) {
+        Swal.close(); // fecha loader fantasma
+      }
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
     const menuIA = document.getElementById('menuConsultorIA');
     if (!menuIA) return;
 
     menuIA.addEventListener('click', function (e) {
-      // evita navegação imediata
+      const destination = this.href;
+
+      // evita reload da mesma página
+      if (destination === window.location.href) return;
+
       e.preventDefault();
 
       let progress = 0;
-      let interval;
 
       Swal.fire({
         title: '🤖 Consultor Inteligente',
@@ -191,7 +204,7 @@
           Swal.showLoading();
           const progressText = document.getElementById('progressValue');
 
-          interval = setInterval(() => {
+          const interval = setInterval(() => {
             if (progress < 95) {
               progress++;
               progressText.textContent = `${progress}%`;
@@ -200,8 +213,10 @@
         }
       });
 
-      // navega após abrir o loader
-      window.location.href = this.href;
+      // 🚀 navegação correta (sem loop no histórico)
+      window.location.assign(destination);
     });
   });
+
+})();
 </script>

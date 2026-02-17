@@ -28,7 +28,10 @@
                   </div>
                   <div>
                     <p class="text-muted fw-bold mb-0 text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.5px;">Análise Atual</p>
-                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Janeiro de 2026</h6>
+                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">
+                      <%= date1.split('-').reverse().join('/') %> até
+                      <%= date2.split('-').reverse().join('/') %>
+                    </h6>
                   </div>
                 </div>
 
