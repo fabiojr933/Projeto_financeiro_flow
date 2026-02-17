@@ -24,7 +24,9 @@
 
   const score = Number(safeDados.health_score) || 0;
   const circumference = 283;
-  const progress = (score / 100) * circumference;
+
+  const normalizedScore = Math.max(0, Math.min(100, score));
+  const progress = (normalizedScore / 100) * circumference;
 %>
 
 <main id="main" class="main" style="min-height: 85vh; background-color: #f6f9ff;">
@@ -137,9 +139,9 @@
                 </circle>
               </svg>
 
-              <div class="position-absolute text-center">
+              <div class="position-absolute text-center w-100 px-2">
                 <span class="d-block fw-bold text-dark"
-                      style="font-size: 5rem; line-height: 1;">
+                      style="font-size: 5rem; line-height: 1; white-space: nowrap;">
                   <%= score %>
                 </span>
                 <span class="text-muted fw-bold small">PONTOS</span>

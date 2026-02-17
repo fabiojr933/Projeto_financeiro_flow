@@ -7,49 +7,60 @@ class DeepSeekService {
       baseURL: process.env.DEEPSEEK_URL
     });
 
-    this.model = "deepseek-chat";
+    this.model = "deepseek-reasoner";
   }
 
   async gerarInsightsFinanceiros(despesa, receita) {
-    const prompt = `
+   const prompt = `
 Você é um consultor financeiro profissional.
 
-Analise os dados abaixo de despesas e receitas e avalie a saúde financeira geral.
-
-Dados de despesa:
-${JSON.stringify(despesa)}
+Analise os dados abaixo de despesas e receitas e avalie a saúde financeira geral do período.
 
 Dados de receita:
-${JSON.stringify(receita)}
+[receita: ${JSON.stringify(receita)}]
 
-Regras de avaliação:
-* Considere o equilíbrio entre receita e despesa.
-* Avalie o percentual da renda comprometida com despesas.
-* Observe concentração de gastos em poucas categorias.
-* Verifique se há saldo positivo ou negativo no período.
+Dados de despesa:
+[despesa: ${JSON.stringify(despesa)}]
 
-Health_score:
-* Use uma escala de -100 a +100, quando 
-* -100 = situação financeira crítica.
-* +100 = saúde financeira excelente.
+Regras de cálculo:
 
+1. Cálculo base:
+- Calcule total das receitas.
+- Calcule total das despesas.
+- Calcule o valor líquido:
+  liquido = total das receitas - total das despesas.
+
+2. Cálculo do health_score:
+  health_score = (liquido / total das receitas) x 100
+  obs: deixa health_score com apenas 2 casa decimal apos a virgula.
+  
 Dicas:
-* Retorne no máximo 5 dicas.
-* Cada dica deve ser curta, clara e acionável.
-* Foque nas despesa e receitas enviadas, analise as categorias.
+- Gere no máximo 5 dicas.
+- Cada dica deve ser curta, clara e acionável.
+- Baseie as dicas exclusivamente nos dados enviados.
+- Priorize categorias com maior impacto financeiro.
+- Se houver saldo negativo, a primeira dica deve tratar disso.
 
-RETORNE UM JSON VÁLIDO.
-NÃO escreva texto fora do JSON.
-NÃO use comentários.
-NÃO use markdown.
+Formato de resposta:
+Retorne um JSON válido.
+Não escreva texto fora do JSON.
+Não use comentários.
+Não use markdown.
 
 Formato EXATO:
 
+
 {
   "health_score": number,
+  total_das_receitas: number,
+  total das despesas: number,
+  liquido, number,
   "dicas": string[]
 }
+
+me mostre a conta como que vc chegou nesse valor do health_score
 `;
+
 
     try {
       const completion = await this.client.chat.completions.create({

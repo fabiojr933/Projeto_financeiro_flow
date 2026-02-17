@@ -34,9 +34,9 @@ class InsightController {
 
             const despesa = await ReportService.sumListCategoryDespesa(userId, date1, date2);
             const receita = await ReportService.sumListCategoryReceita(userId, date1, date2);
-
+         
             const dados = await DeepSeekService.gerarInsightsFinanceiros(despesa, receita);
-
+        
             res.render('insight/index', { dados, date1, date2 });
         } catch (error) {
             res.render('insight/index', { date1, date2 });
