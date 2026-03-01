@@ -64,6 +64,7 @@ class ReportRepository {
     const result = await Transaction.findAll({
       where: {
         user_id: user_id,
+        type: 'despesa', 
         due_date: {
           [Op.between]: [date1, date2]
         }
@@ -91,6 +92,7 @@ async sumListAccount(user_id, date1, date2) {
     const result = await Transaction.findAll({
       where: {
         user_id: user_id,
+        type: 'despesa', 
         due_date: {
           [Op.between]: [date1, date2]
         }
@@ -126,6 +128,7 @@ async sumListAccount(user_id, date1, date2) {
     const result = await Transaction.findAll({
       where: {
         user_id: user_id,
+        type: 'despesa', 
         due_date: {
           [Op.between]: [date1, date2]
         }
@@ -160,7 +163,8 @@ async sumListAccount(user_id, date1, date2) {
 
     const result = await Transaction.findAll({
       where: {
-        user_id: user_id,      
+        user_id: user_id,     
+        type: 'despesa', 
         due_date: {
           [Op.between]: [date1, date2]
         }
