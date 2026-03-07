@@ -2,26 +2,29 @@ version: "3.7"
 
 services:
   app_financeiro:
-    # ... outras configurações ...
-    # env_file:      <--- REMOVA OU COMENTE ESTA LINHA
-    #   - .env       <--- REMOVA OU COMENTE ESTA LINHA
+    image: docker push fabiojr933/projeto-financeiro-app:tagname # O Portainer agora sabe o que baixar
+    restart: always
     environment:
-      # Sobrescrevemos o host para usar o nome do serviço do seu banco
       - DB_HOST=postgres
       - DB_USER=postgres
       - DB_PASS=c569134002810fcb9195edb9ae0d29ae
       - DB_NAME=financeiro
+      - APP_PORT=3020
     networks:
-      - fox             # Rede para falar com o banco
-      - traefik_network # Rede para falar com o Traefik (ajuste o nome se necessário)
+      - fox
+      - traefik_network
     labels:
       - "traefik.enable=true"
-      # Ajuste o subdomínio abaixo
       - "traefik.http.routers.financeiro-app.rule=Host(`app.foxsistemas.dev.br`)"
       - "traefik.http.routers.financeiro-app.entrypoints=websecure"
       - "traefik.http.routers.financeiro-app.tls.certresolver=letsencrypt"
       - "traefik.http.services.financeiro-app.loadbalancer.server.port=3020"
     deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
       resources:
         limits:
           cpus: "0.50"
@@ -30,7 +33,5 @@ services:
 networks:
   fox:
     external: true
-    name: fox
   traefik_network:
     external: true
-    name: traefik_network # <--- Verifique se este é o nome da rede do seu Traefik
