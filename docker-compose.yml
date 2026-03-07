@@ -2,10 +2,9 @@ version: "3.7"
 
 services:
   app_financeiro:
-    build: .
-    restart: always
-    env_file:
-      - .env
+    # ... outras configurações ...
+    # env_file:      <--- REMOVA OU COMENTE ESTA LINHA
+    #   - .env       <--- REMOVA OU COMENTE ESTA LINHA
     environment:
       # Sobrescrevemos o host para usar o nome do serviço do seu banco
       - DB_HOST=postgres
